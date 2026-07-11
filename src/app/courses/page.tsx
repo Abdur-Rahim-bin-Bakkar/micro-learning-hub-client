@@ -1,6 +1,7 @@
 import CourseHero from "@/components/courses/CourseHero";
 import CourseFilters from "@/components/courses/CourseFilters";
-import CourseCard from "@/components/courses/CourseCard";
+// import CourseCard from "@/components/courses/CourseCardContainer";
+import CourseCardContainer from "@/components/courses/CourseCardContainer";
 
 
 export default function CoursesPage(){
@@ -13,7 +14,7 @@ return (
 
 <CourseFilters/>
 
-<CourseCard/>
+<CourseCardContainer/>
 
 </main>
 

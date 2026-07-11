@@ -11,6 +11,7 @@ import {
   Megaphone,
   Cpu,
 } from "lucide-react";
+import Link from "next/link";
 
 
 
@@ -111,21 +112,21 @@ export default function LearningCategories() {
         <motion.div
 
           initial={{
-            opacity:0,
-            y:30
+            opacity: 0,
+            y: 30
           }}
 
           whileInView={{
-            opacity:1,
-            y:0
+            opacity: 1,
+            y: 0
           }}
 
           transition={{
-            duration:.5
+            duration: .5
           }}
 
           viewport={{
-            once:true
+            once: true
           }}
 
           className="mx-auto mb-12 max-w-2xl text-center"
@@ -164,7 +165,7 @@ export default function LearningCategories() {
 
 
           {
-            categories.map((category,index)=>{
+            categories.map((category, index) => {
 
 
               const Icon = category.icon;
@@ -180,36 +181,36 @@ export default function LearningCategories() {
 
 
                   initial={{
-                    opacity:0,
-                    y:30
+                    opacity: 0,
+                    y: 30
                   }}
 
 
                   whileInView={{
-                    opacity:1,
-                    y:0
+                    opacity: 1,
+                    y: 0
                   }}
 
 
                   transition={{
-                    duration:.4,
-                    delay:index * 0.08
+                    duration: .4,
+                    delay: index * 0.08
                   }}
 
 
                   viewport={{
-                    once:true
+                    once: true
                   }}
 
 
 
                   whileHover={{
-                    y:-8
+                    y: -8
                   }}
 
 
 
-                  className="group cursor-pointer rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur transition hover:border-blue-500/50"
+                  className="group rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur transition hover:border-blue-500/50"
 
 
                 >
@@ -222,7 +223,7 @@ export default function LearningCategories() {
                   <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-xl bg-blue-500/10 text-blue-400 transition group-hover:bg-blue-500 group-hover:text-white">
 
 
-                    <Icon size={28}/>
+                    <Icon size={28} />
 
 
                   </div>
@@ -270,13 +271,14 @@ export default function LearningCategories() {
                     </span>
 
 
+                    <Link href={'/courses'} className="cursor-pointer text-gray-500 duration-300 font-bold hover:text-cyan-400" >
+                      <span className="text-sm  ">
 
-                    <span className="text-sm text-gray-500">
 
+                        Explore →
 
-                      Explore →
-
-                    </span>
+                      </span>
+                    </Link>
 
 
 

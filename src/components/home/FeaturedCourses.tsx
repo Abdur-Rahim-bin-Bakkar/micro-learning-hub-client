@@ -8,6 +8,7 @@ import {
     BookOpen,
     ArrowRight,
 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 
@@ -212,7 +213,9 @@ export default function FeaturedCourses() {
                                 <div className="relative">
 
 
-                                    <img
+                                    <Image
+                                    width={500}
+                                    height={400}
 
                                         src={course.image}
 
