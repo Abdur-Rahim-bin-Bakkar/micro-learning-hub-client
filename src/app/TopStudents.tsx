@@ -84,7 +84,7 @@ const students : Student[] = [
 
 export default function TopStudents() {
 
-    const [active, setActive] = useState(0);
+    const [active, setActive] = useState<number>(0);
 
     const student = students[active];
 
