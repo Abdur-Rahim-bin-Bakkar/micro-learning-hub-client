@@ -4,6 +4,7 @@ import { Button } from "@heroui/react";
 import TopStudents from "./TopStudents";
 import LearningCategories from "./LearningCategories";
 import FeaturedCourses from "@/components/home/FeaturedCourses";
+import HowItWorks from "@/components/home/HowItWorks";
 
 export default function Home() {
   return (
@@ -12,6 +13,7 @@ export default function Home() {
         <HeroBanner />
         <LearningCategories />
         <FeaturedCourses/>
+        <HowItWorks/>
         <PopularTeachers />
         <TopStudents />
       </main>
