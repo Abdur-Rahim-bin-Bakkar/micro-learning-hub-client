@@ -29,7 +29,7 @@ export default function FeaturedCourses() {
 
 
                 const response = await fetch(
-                    `${process.env.NEXT_PUBLIC_API_URL}/api/courses?featured=true`
+                    `${process.env.NEXT_PUBLIC_API_URL}/api/courses/featured`
                 );
 
 
@@ -247,7 +247,7 @@ export default function FeaturedCourses() {
 
                         View All
 
-                        <ArrowRight size={18}/>
+                        <ArrowRight size={18} />
 
                     </Link>
 
@@ -271,8 +271,8 @@ export default function FeaturedCourses() {
 
 
                     {
-                        courses.map((course)=>(
-                            
+                        courses.map((course) => (
+
 
                             <CourseCard
 
