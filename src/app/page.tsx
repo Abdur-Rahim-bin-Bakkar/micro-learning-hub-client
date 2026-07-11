@@ -5,6 +5,8 @@ import TopStudents from "./TopStudents";
 import LearningCategories from "./LearningCategories";
 import FeaturedCourses from "@/components/home/FeaturedCourses";
 import HowItWorks from "@/components/home/HowItWorks";
+import WhyChooseUs from "@/components/home/WhyChooseUs";
+import StudentTestimonials from "@/components/home/StudentTestimonials";
 
 export default function Home() {
   return (
@@ -13,9 +15,11 @@ export default function Home() {
         <HeroBanner />
         <LearningCategories />
         <FeaturedCourses/>
-        <HowItWorks/>
+        <StudentTestimonials/>
         <PopularTeachers />
         <TopStudents />
+        <HowItWorks/>
+        <WhyChooseUs/>
       </main>
     </div>
   );
