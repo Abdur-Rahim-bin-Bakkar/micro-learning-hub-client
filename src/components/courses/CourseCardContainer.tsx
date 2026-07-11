@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { Clock, Star, Users } from "lucide-react";
 import Image from "next/image";
@@ -31,12 +32,13 @@ export default function CourseCardContainer() {
     const [courses, setCourses] = useState<Course[]>([]);
     const [loading, setLoading] = useState(true);
     console.log(courses, 'cs')
+    const searchParams = useSearchParams();
 
     useEffect(() => {
         const fetchCourses = async () => {
             try {
                 const response = await fetch(
-                    `${process.env.NEXT_PUBLIC_API_URL}/api/courses`
+                    `${process.env.NEXT_PUBLIC_API_URL}/api/courses?${searchParams.toString()}`
                 );
 
                 const result = await response.json();
@@ -50,7 +52,7 @@ export default function CourseCardContainer() {
         };
 
         fetchCourses();
-    }, []);
+    }, [searchParams]);
 
     if (loading) {
         return (
@@ -69,7 +71,7 @@ export default function CourseCardContainer() {
                         whileHover={{ y: -8 }}
                         className="overflow-hidden rounded-3xl border border-white/10 bg-white/5"
                     >
-                        
+
 
                         {
                             course.thumbnail &&
