@@ -14,8 +14,8 @@ export default function Home() {
     <div className="">
       <main>
         <HeroBanner />
-        <LearningCategories />
         <FeaturedCourses/>
+        <LearningCategories />
         <StudentTestimonials/>
         <PopularTeachers />
         <TopStudents />
