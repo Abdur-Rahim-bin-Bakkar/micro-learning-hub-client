@@ -7,6 +7,7 @@ import FeaturedCourses from "@/components/home/FeaturedCourses";
 import HowItWorks from "@/components/home/HowItWorks";
 import WhyChooseUs from "@/components/home/WhyChooseUs";
 import StudentTestimonials from "@/components/home/StudentTestimonials";
+import FAQ from "@/components/home/FAQ";
 
 export default function Home() {
   return (
@@ -20,6 +21,7 @@ export default function Home() {
         <TopStudents />
         <HowItWorks/>
         <WhyChooseUs/>
+        <FAQ/>
       </main>
     </div>
   );
