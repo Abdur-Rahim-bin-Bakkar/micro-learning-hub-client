@@ -1,6 +1,7 @@
 import HeroBanner from "@/components/home/HeroBanner";
 import PopularTeachers from "@/components/home/PopularTeachers";
 import { Button } from "@heroui/react";
+import TopStudents from "./TopStudents";
 
 export default function Home() {
   return (
@@ -8,6 +9,7 @@ export default function Home() {
       <main>
         <HeroBanner />
         <PopularTeachers />
+        <TopStudents />
       </main>
     </div>
   );
