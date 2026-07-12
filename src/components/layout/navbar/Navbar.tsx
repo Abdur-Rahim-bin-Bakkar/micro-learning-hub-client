@@ -8,7 +8,7 @@ import { Menu, X, GraduationCap, LayoutDashboard, LayoutDashboardIcon } from "lu
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { useUserSession } from "@/lib/sessions/session";
-import { useUserToken } from "@/lib/sessions/token";
+// import { useUserToken } from "@/lib/sessions/token";
 
 // নিজের auth hook import করবে
 // import { useSession } from "@/lib/auth-client";
@@ -68,11 +68,19 @@ export default function Navbar() {
       title: "About",
       href: "/about",
     },
-    ...(user
+    ...(user?.role === 'user'
       ? [
         {
           title: "Apply",
           href: "/apply",
+        },
+      ]
+      : []),
+      ...(user?.role === 'admin' || user?.role === 'student'
+      ? [
+        {
+          title: "Help Desk",
+          href: "/help-desk",
         },
       ]
       : []),
@@ -226,7 +234,7 @@ export default function Navbar() {
             }}
             className="overflow-hidden border-t border-white/5 bg-[#070B14]"
           >
-            <div className="space-y-5 px-6 py-6">
+            <div className="md:hidden space-y-5 px-6 py-6">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
