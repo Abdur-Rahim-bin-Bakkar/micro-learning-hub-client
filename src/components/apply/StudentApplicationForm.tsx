@@ -5,6 +5,7 @@ import { useState } from "react";
 import UserInfoCard from "./UserInfoCard";
 import { useUserSession } from "@/lib/sessions/session";
 // import UserInfoCard from "./UserInfoCard";
+import { createStudentApplication } from "@/lib/api/application/student";
 
 
 export default function StudentApplicationForm() {
@@ -14,55 +15,47 @@ export default function StudentApplicationForm() {
     const user = session?.user
 
 
-  
 
 
 
-    const handleStudentSubmit = (
+
+    const handleStudentSubmit = async (
         e: React.FormEvent<HTMLFormElement>
     ) => {
-
-
         e.preventDefault();
-
 
         const form = e.currentTarget;
 
+        const studentData = {
+            name: user?.name ?? "",
+            email: user?.email ?? "",
+            image: user?.image ?? "",
+            userId: user?.id ?? "",
 
-        const data = {
+            education: (
+                form.elements.namedItem("education") as HTMLInputElement
+            ).value,
 
+            interest: (
+                form.elements.namedItem("interest") as HTMLInputElement
+            ).value,
 
-            name: user?.name,
-
-            email: user?.email,
-
-            image: user?.image,
-            userId:user?.id,
-
-
-            education:
-                (form.elements.namedItem("education") as HTMLInputElement).value,
-
-
-            interest:
-                (form.elements.namedItem("interest") as HTMLInputElement).value,
-
-
-            goal:
-                (form.elements.namedItem("goal") as HTMLInputElement).value,
-
-
+            goal: (
+                form.elements.namedItem("goal") as HTMLInputElement
+            ).value,
         };
 
+        const result = await createStudentApplication(studentData);
 
+        if (result.success) {
+            console.log("Student Application Added");
+            console.log(result?.data);
 
-        console.log(
-            "Student Application:",
-            data
-        );
-
-
-    }
+            form.reset();
+        } else {
+            console.log(result?.message);
+        }
+    };
 
 
 

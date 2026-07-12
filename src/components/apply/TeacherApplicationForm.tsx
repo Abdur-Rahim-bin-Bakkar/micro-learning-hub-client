@@ -3,69 +3,52 @@
 
 import { useUserSession } from "@/lib/sessions/session";
 import UserInfoCard from "./UserInfoCard";
+import { createTeacherApplication } from "@/lib/api/application/teacher";
 
 
 
-export default function TeacherApplicationForm(){
+export default function TeacherApplicationForm() {
 
 
 
     // পরে এখানে better auth session থেকে আসবে
-    const {session} = useUserSession()
-    console.log(session?.user,'us')
+    const { session } = useUserSession()
+    console.log(session?.user, 'us')
 
-    const user =session?.user
-
-
+    const user = session?.user
 
 
 
-    const handleTeacherSubmit = (
-        e:React.FormEvent<HTMLFormElement>
-    )=>{
 
 
+    const handleTeacherSubmit = async (
+        e: React.FormEvent<HTMLFormElement>
+    ) => {
         e.preventDefault();
-
-
 
         const formData = new FormData(e.currentTarget);
 
-
-
         const teacherData = {
+            name: user?.name ?? "",
+            email: user?.email ?? "",
+            image: user?.image ?? "",
+            userId: user?.id ?? "",
 
-
-            name:user?.name,
-
-            email:user?.email,
-
-            image:user?.image,
-             userId:user?.id,
-
-
-            subject:
-            formData.get("subject"),
-
-
-            experience:
-            formData.get("experience"),
-
-
-            qualification:
-            formData.get("qualification"),
-
-
+            subject: formData.get("subject"),
+            experience: formData.get("experience"),
+            qualification: formData.get("qualification"),
         };
 
+        const result = await createTeacherApplication(teacherData);
 
+        if (result.success) {
+            console.log("Teacher Application Added");
+            console.log(result.data);
 
-        console.log(
-            "Teacher Application Data:",
-            teacherData
-        );
-
-
+            e.currentTarget.reset();
+        } else {
+            console.log(result.message);
+        }
     };
 
 

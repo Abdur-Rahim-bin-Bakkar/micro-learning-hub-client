@@ -35,21 +35,24 @@ export default function UserInfoCard() {
 
         <div className="flex items-center gap-4 bg-gray-50 p-4 rounded-xl mb-6">
 
+            {
+                user?.image
+                && <Image
+                    unoptimized
 
-            <Image
-                unoptimized
+                    src={user?.image}
 
-                src={user?.image}
+                    width={60}
 
-                width={60}
+                    height={60}
 
-                height={60}
+                    alt="profile"
 
-                alt="profile"
+                    className="rounded-full"
 
-                className="rounded-full"
+                />
+            }
 
-            />
 
 
 
