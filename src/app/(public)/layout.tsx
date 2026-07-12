@@ -3,7 +3,7 @@ dns.setServers(["1.1.1.1", "8.8.8.8"]);
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
-import "./globals.css";
+// import "./globals.css";
 import Navbar from "@/components/layout/navbar/Navbar";
 import Footer from "@/components/shared/Footer";
 // import Navbar from "@/components/layout/Navbar/Navbar";
@@ -38,9 +38,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        {/* <Navbar/> */}
+        <Navbar/>
         {children}
-        {/* <Footer/> */}
+        <Footer/>
       </body>
     </html>
   );
