@@ -7,6 +7,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { Menu, X, GraduationCap } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
+import { useUserSession } from "@/lib/sessions/session";
 
 // নিজের auth hook import করবে
 // import { useSession } from "@/lib/auth-client";
@@ -41,7 +42,7 @@ export default function Navbar() {
 
   // Demo
 
-  const { data: session, isPending } = authClient.useSession();
+  const { session, isPending } = useUserSession()
 
   const user = session?.user;
   console.log(session, 'session')
@@ -245,29 +246,39 @@ export default function Navbar() {
                     </Link>
                   </>
                 ) : (
-                  <Link
-                    href="/profile"
-                    onClick={() => setOpen(false)}
-                    className="flex items-center gap-3"
-                  >
-                    <Image
-                      src={user.image}
-                      alt={user.name}
-                      width={48}
-                      height={48}
-                      className="h-12 w-12 rounded-full object-cover"
-                    />
+                  <>
+                    <Link
+                      href="/profile"
+                      className="group flex items-center gap-3 rounded-full border border-white/10 bg-white/5 px-3 py-2 transition hover:border-cyan-400/40 hover:bg-white/10"
+                    >
+                      <Image
+                        src={user?.image}
+                        unoptimized
+                        alt={user.name}
+                        width={42}
+                        height={42}
+                        className="h-10 w-10 rounded-full object-cover"
+                      />
 
-                    <div>
-                      <p className="font-semibold text-white">
-                        {user.name}
-                      </p>
+                      <div className="flex flex-col">
+                        <span className="text-sm font-semibold text-white">
+                          {user.name}
+                        </span>
 
-                      <p className="text-sm text-slate-400">
-                        {user.email}
-                      </p>
-                    </div>
-                  </Link>
+                        <span className="text-xs text-slate-400">
+                          View Profile
+                        </span>
+                      </div>
+                    </Link>
+
+                    <button
+                      type="button"
+                      onClick={signOut}
+                      className="rounded-xl border w-full border-red-500/30 mt-3 bg-red-500/10 px-4 py-2 text-sm font-semibold text-red-400 transition-all duration-300 hover:border-red-500 hover:bg-red-500 hover:text-white hover:shadow-lg hover:shadow-red-500/20 active:scale-95"
+                    >
+                      Logout
+                    </button>
+                  </>
                 )}
               </div>
             </div>
