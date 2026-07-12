@@ -1,89 +1,164 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TeacherApplicationForm from "@/components/apply/TeacherApplicationForm";
 import StudentApplicationForm from "@/components/apply/StudentApplicationForm";
-
+import ApplicationStatusCard from "@/components/apply/ApplicationStatusCard";
+import { getApplicationStatus } from "@/lib/api/application/status";
+import { authClient } from "@/lib/auth-client";
 
 export default function ApplyPage() {
+    const { data: session, isPending } = authClient.useSession();
 
+    const user = session?.user;
 
     const [activeTab, setActiveTab] = useState<
         "teacher" | "student"
     >("teacher");
+
+    const [loading, setLoading] = useState(true);
+
+    const [applicationStatus, setApplicationStatus] = useState<any>(null);
+
+    useEffect(() => {
+
+        if (isPending) return;
+
+        if (!user?.id) {
+
+            setLoading(false);
+
+            return;
+
+        }
+
+        const loadStatus = async () => {
+
+            const result = await getApplicationStatus(user.id);
+
+            setApplicationStatus(result);
+
+            setLoading(false);
+
+        };
+
+        loadStatus();
+
+    }, [user, isPending]);
+
+
+
+    if (loading) {
+
+        return (
+
+            <div className="flex min-h-screen items-center justify-center">
+
+                <span className="loading loading-spinner loading-lg"></span>
+
+            </div>
+
+        );
+
+    }
+
 
 
     return (
 
         <div className="min-h-screen bg-gray-100 py-10">
 
+            <div className="mx-auto max-w-4xl px-5">
 
-            <div className="max-w-3xl mx-auto px-5">
+                <h1 className="mb-8 text-center text-3xl font-bold">
 
-
-                <h1 className="text-3xl font-bold text-center mb-8">
                     Application Form
+
                 </h1>
 
 
 
-                {/* Category Button */}
+                {/* Already Applied */}
 
-                <div className="flex justify-center gap-5 mb-8">
+                {applicationStatus?.alreadyApplied ? (
 
+                    <ApplicationStatusCard
 
-                    <button
+                        application={applicationStatus.application}
 
-                        onClick={() => setActiveTab("teacher")}
+                        type={applicationStatus.type}
 
-                        className={`px-6 py-3 rounded-lg font-semibold ${
-                            activeTab === "teacher"
-                            ?
-                            "bg-blue-600 text-white"
-                            :
-                            "bg-white"
-                        }`}
+                    />
 
-                    >
-                        Teacher
-                    </button>
+                ) : (
 
+                    <>
 
+                        {/* Category */}
 
-                    <button
+                        <div className="mb-8 flex justify-center gap-5">
 
-                        onClick={() => setActiveTab("student")}
+                            <button
 
-                        className={`px-6 py-3 rounded-lg font-semibold ${
-                            activeTab === "student"
-                            ?
-                            "bg-green-600 text-white"
-                            :
-                            "bg-white"
-                        }`}
+                                onClick={() => setActiveTab("teacher")}
 
-                    >
-                        Student
-                    </button>
+                                className={`rounded-lg px-6 py-3 font-semibold transition ${
 
+                                    activeTab === "teacher"
 
+                                        ? "bg-blue-600 text-white"
 
-                </div>
+                                        : "bg-white"
+
+                                }`}
+
+                            >
+
+                                Teacher
+
+                            </button>
 
 
 
-                {
-                    activeTab === "teacher"
-                    ?
-                    <TeacherApplicationForm />
-                    :
-                    <StudentApplicationForm />
-                }
+                            <button
+
+                                onClick={() => setActiveTab("student")}
+
+                                className={`rounded-lg px-6 py-3 font-semibold transition ${
+
+                                    activeTab === "student"
+
+                                        ? "bg-green-600 text-white"
+
+                                        : "bg-white"
+
+                                }`}
+
+                            >
+
+                                Student
+
+                            </button>
+
+                        </div>
 
 
+
+                        {activeTab === "teacher" ? (
+
+                            <TeacherApplicationForm />
+
+                        ) : (
+
+                            <StudentApplicationForm />
+
+                        )}
+
+                    </>
+
+                )}
 
             </div>
-
 
         </div>
 
