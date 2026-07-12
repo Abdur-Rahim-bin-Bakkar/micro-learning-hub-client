@@ -25,6 +25,7 @@ export default function TeacherApplicationForm() {
         e: React.FormEvent<HTMLFormElement>
     ) => {
         e.preventDefault();
+        const form = e.currentTarget;
 
         const formData = new FormData(e.currentTarget);
 
@@ -45,7 +46,7 @@ export default function TeacherApplicationForm() {
             console.log("Teacher Application Added");
             console.log(result.data);
 
-            e.currentTarget.reset();
+            form.reset();
         } else {
             console.log(result.message);
         }

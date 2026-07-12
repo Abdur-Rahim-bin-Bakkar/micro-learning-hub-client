@@ -8,25 +8,24 @@ import { getApplicationStatus } from "@/lib/api/application/status";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 
-export default function ApplyPage() {
+export default function ApplyPageContainer() {
     const { data: session, isPending } = authClient.useSession();
     const router = useRouter()
 
 
     const user = session?.user;
 
+
     const [activeTab, setActiveTab] = useState<
         "teacher" | "student"
     >("teacher");
 
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState<boolean>(true);
 
     const [applicationStatus, setApplicationStatus] = useState<any>(null);
 
     useEffect(() => {
-        if (!session) {
-            router.push('/login')
-        }
+
 
         if (isPending) return;
 
@@ -51,21 +50,8 @@ export default function ApplyPage() {
         loadStatus();
 
     }, [user, isPending]);
+   
 
-
-    if (loading) {
-
-        return (
-
-            <div className="flex min-h-screen items-center justify-center">
-
-                <span className="loading loading-spinner loading-lg"></span>
-
-            </div>
-
-        );
-
-    }
 
 
 
