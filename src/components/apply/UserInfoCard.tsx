@@ -6,11 +6,11 @@ import Image from "next/image";
 
 type UserInfo = {
 
-    name:string;
+    name: string;
 
-    email:string;
+    email: string;
 
-    image:string;
+    image: string;
 
 }
 
@@ -18,17 +18,17 @@ type UserInfo = {
 
 interface Props {
 
-    user:UserInfo;
+    user: UserInfo;
 
 }
 
 
 
-export default function UserInfoCard(){
-        const {session} = useUserSession()
-        console.log(session?.user,'us')
-    
-        const user =session?.user
+export default function UserInfoCard() {
+    const { session } = useUserSession()
+    console.log(session?.user, 'us')
+
+    const user = session?.user
 
 
     return (
@@ -37,7 +37,7 @@ export default function UserInfoCard(){
 
 
             <Image
-            unoptimized
+                unoptimized
 
                 src={user?.image}
 

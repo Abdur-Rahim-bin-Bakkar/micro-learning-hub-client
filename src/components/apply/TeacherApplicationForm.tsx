@@ -41,6 +41,7 @@ export default function TeacherApplicationForm(){
             email:user?.email,
 
             image:user?.image,
+             userId:user?.id,
 
 
             subject:

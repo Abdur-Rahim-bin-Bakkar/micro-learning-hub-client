@@ -37,6 +37,7 @@ export default function StudentApplicationForm() {
             email: user?.email,
 
             image: user?.image,
+            userId:user?.id,
 
 
             education:
