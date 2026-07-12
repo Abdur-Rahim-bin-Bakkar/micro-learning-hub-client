@@ -1,3 +1,6 @@
+'use server'
+import { getUserToken } from "@/lib/sessions/token";
+
 export interface StudentApplicationPayload {
   name: string;
   email: string;
@@ -12,12 +15,15 @@ export const createStudentApplication = async (
   payload: StudentApplicationPayload
 ) => {
   try {
+    const token = await getUserToken()
+    console.log(token, 'token')
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/applications/student`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(payload),
       }

@@ -6,9 +6,12 @@ import StudentApplicationForm from "@/components/apply/StudentApplicationForm";
 import ApplicationStatusCard from "@/components/apply/ApplicationStatusCard";
 import { getApplicationStatus } from "@/lib/api/application/status";
 import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 export default function ApplyPage() {
     const { data: session, isPending } = authClient.useSession();
+    const router = useRouter()
+
 
     const user = session?.user;
 
@@ -21,6 +24,9 @@ export default function ApplyPage() {
     const [applicationStatus, setApplicationStatus] = useState<any>(null);
 
     useEffect(() => {
+        if (!session) {
+            router.push('/login')
+        }
 
         if (isPending) return;
 
@@ -45,7 +51,6 @@ export default function ApplyPage() {
         loadStatus();
 
     }, [user, isPending]);
-
 
 
     if (loading) {
@@ -102,15 +107,13 @@ export default function ApplyPage() {
 
                                 onClick={() => setActiveTab("teacher")}
 
-                                className={`rounded-lg px-6 py-3 font-semibold transition ${
+                                className={`rounded-lg px-6 py-3 font-semibold transition ${activeTab === "teacher"
 
-                                    activeTab === "teacher"
+                                    ? "bg-blue-600 text-white"
 
-                                        ? "bg-blue-600 text-white"
+                                    : "bg-white"
 
-                                        : "bg-white"
-
-                                }`}
+                                    }`}
 
                             >
 
@@ -124,15 +127,13 @@ export default function ApplyPage() {
 
                                 onClick={() => setActiveTab("student")}
 
-                                className={`rounded-lg px-6 py-3 font-semibold transition ${
+                                className={`rounded-lg px-6 py-3 font-semibold transition ${activeTab === "student"
 
-                                    activeTab === "student"
+                                    ? "bg-green-600 text-white"
 
-                                        ? "bg-green-600 text-white"
+                                    : "bg-white"
 
-                                        : "bg-white"
-
-                                }`}
+                                    }`}
 
                             >
 
