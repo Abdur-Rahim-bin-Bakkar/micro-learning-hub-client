@@ -10,7 +10,7 @@ const HelpDeskPage =async () => {
     console.log(PostData,'pd')
     return (
         <div>
-            <h1>this is help page</h1>
+            <h1>this is help page{PostData?.data?.length}</h1>
         </div>
     );
 };
