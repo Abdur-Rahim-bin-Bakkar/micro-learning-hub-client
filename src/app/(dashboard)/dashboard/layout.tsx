@@ -11,30 +11,30 @@ const DashboardLayout = async ({ children }: DashboardLayoutProps) => {
     await isLogin(session)
 
     return (
-         <main className="min-h-screen bg-[#0B0F14]">
+        <main className="min-h-screen bg-[#0B0F14]">
 
-      {/* Mobile Navbar */}
-      <MobileSidebar />
+            {/* Mobile Navbar */}
+            <MobileSidebar />
 
-      <div className="flex">
+            <div className="flex">
 
-        {/* Desktop Sidebar */}
-        <aside className="sticky top-0 hidden h-screen lg:block">
-          <Sidebar />
-        </aside>
+                {/* Desktop Sidebar */}
+                <aside className="sticky top-0 hidden h-screen lg:block">
+                    <Sidebar />
+                </aside>
 
-        {/* Main Content */}
-        <section className="min-h-screen flex-1">
+                {/* Main Content */}
+                <section className="min-h-screen flex-1">
 
-          <div className="p-5 md:p-8 lg:p-10">
-            {children}
-          </div>
+                    <div className="p-5 md:p-8 lg:p-10">
+                        {children}
+                    </div>
 
-        </section>
+                </section>
 
-      </div>
+            </div>
 
-    </main>
+        </main>
     );
 };
 
