@@ -52,6 +52,11 @@ const adminLinks: unknown = [
         icon: Megaphone,
     },
     {
+        titel: 'Help Desk Posts',
+        href: "/dashboard/admin/helpdesk",
+        icon: Megaphone,
+    },
+    {
         title: "Settings",
         href: "/dashboard/admin/settings",
         icon: Settings,
