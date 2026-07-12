@@ -4,306 +4,250 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import {
-    CalendarDays,
-    User,
-    ArrowRight,
-    Megaphone,
+  CalendarDays,
+  Megaphone,
+  Flag,
+  GraduationCap,
 } from "lucide-react";
 
-
 export type Announcement = {
+  _id: string;
+  title: string;
+  slug: string;
+  description: string;
+  image: string;
+  type: string;
+  priority: string;
 
-    _id: string;
+  author: {
+    id: string;
+    name: string;
+    role: string;
+    photo: string;
+  };
 
-    title: string;
-
-    slug: string;
-
-    description: string;
-
-    image: string;
-
-    type: string;
-
-    priority: string;
-
-
-    author: {
-
-        id: string;
-
-        name: string;
-
-        role: string;
-
-        photo: string;
-
-    };
-
-
-    publishedAt: string;
-
+  publishedAt: string;
 };
-
-
 
 type Props = {
-
-    announcement: Announcement;
-
+  announcement: Announcement;
 };
 
-
-
 export default function AnnouncementCard({
-    announcement,
+  announcement,
 }: Props) {
+  return (
+    <motion.article
+      initial={{
+        opacity: 0,
+        y: 40,
+      }}
+      whileInView={{
+        opacity: 1,
+        y: 0,
+      }}
+      transition={{
+        duration: 0.5,
+      }}
+      viewport={{
+        once: true,
+      }}
+      className="
+        mx-auto
+        max-w-2xl
+        overflow-hidden
+        rounded-3xl
+        border
+        border-white/10
+        bg-[#0B1120]
+        shadow-2xl
+      "
+    >
+      {/* Cover Image */}
+      <div className="relative h-[450px] w-full">
+        <Image
+          src={announcement.image || "/placeholder.png"}
+          alt={announcement.title}
+          fill
+          unoptimized
+          priority
+          className="object-cover"
+        />
 
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0B1120] via-[#0B112090] to-transparent" />
+      </div>
 
-    return (
+      {/* Content */}
+      <div className="px-8 py-10 md:px-14">
+        {/* Logo */}
+        <div className="flex justify-center">
+          <Link
+            href="/"
+            className="flex items-center gap-3 transition hover:scale-105"
+          >
+            <div className="rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 p-3 shadow-lg">
+              <GraduationCap
+                className="text-white"
+                size={28}
+              />
+            </div>
 
-        <motion.div
+            <h2 className="text-3xl font-bold text-white">
+              Micro
+              <span className="text-cyan-400">
+                Learn
+              </span>
+            </h2>
+          </Link>
+        </div>
 
-            initial={{
-                opacity:0,
-                y:30
-            }}
-
-            whileInView={{
-                opacity:1,
-                y:0
-            }}
-
-            viewport={{
-                once:true
-            }}
-
-            whileHover={{
-                y:-8
-            }}
-
-
+        {/* Date */}
+        <div className="mt-6 flex justify-center">
+          <div
             className="
-            overflow-hidden
-            rounded-3xl
-            border
-            border-white/10
-            bg-white/5
-            backdrop-blur
-            shadow-xl
+              flex
+              items-center
+              gap-2
+              rounded-full
+              border
+              border-white/10
+              bg-white/5
+              px-5
+              py-2
+              text-sm
+              text-gray-300
             "
+          >
+            <CalendarDays size={16} />
 
+            {new Date(
+              announcement.publishedAt
+            ).toLocaleDateString("en-GB", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })}
+          </div>
+        </div>
+
+        {/* Title */}
+        <h1
+          className="
+            mx-auto
+            mt-8
+            max-w-4xl
+            text-center
+            text-3xl
+            font-bold
+            leading-tight
+            text-white
+            md:text-5xl
+          "
         >
+          {announcement.title}
+        </h1>
 
+        {/* Badges */}
+        <div
+          className="
+            mt-8
+            flex
+            flex-wrap
+            justify-center
+            gap-4
+          "
+        >
+          <span
+            className="
+              flex
+              items-center
+              gap-2
+              rounded-full
+              bg-cyan-600
+              px-5
+              py-2.5
+              text-sm
+              font-semibold
+              text-white
+            "
+          >
+            <Megaphone size={16} />
 
-            {/* Image */}
+            {announcement.type}
+          </span>
 
-            <div className="
-            relative
-            h-56
-            w-full
-            ">
+          <span
+            className={`
+              flex
+              items-center
+              gap-2
+              rounded-full
+              px-5
+              py-2.5
+              text-sm
+              font-semibold
+              text-white
 
+              ${
+                announcement.priority === "high"
+                  ? "bg-red-600"
+                  : announcement.priority === "medium"
+                  ? "bg-yellow-500"
+                  : "bg-green-600"
+              }
+            `}
+          >
+            <Flag size={16} />
 
-                <Image
+            {announcement.priority.toUpperCase()}
+          </span>
+        </div>
 
-                    src={
-                        announcement.image ||
-                        "/placeholder.png"
-                    }
+        {/* Divider */}
+        <div className="my-10 h-px bg-white/10" />
 
-                    unoptimized
+        {/* Description */}
+        <div className="mx-auto max-w-4xl">
+          <p
+            className="
+              whitespace-pre-line
+              text-lg
+              leading-9
+              text-gray-300
+            "
+          >
+            {announcement.description}
+          </p>
+        </div>
 
-                    fill
-
-                    alt={
-                        announcement.title
-                    }
-
-                    className="
-                    object-cover
-                    "
-
+        {/* Footer */}
+        <div className="mt-14 border-t border-white/10 pt-8">
+          <div className="flex flex-col items-center gap-5">
+            <Link
+              href="/"
+              className="flex items-center gap-3"
+            >
+              <div className="rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 p-3">
+                <GraduationCap
+                  className="text-white"
+                  size={24}
                 />
+              </div>
 
-
-
-                <div className="
-                absolute
-                inset-0
-                bg-gradient-to-t
-                from-black/70
-                to-transparent
-                " />
-
-
-                <span className="
-                absolute
-                left-5
-                top-5
-                flex
-                items-center
-                gap-2
-                rounded-full
-                bg-blue-600
-                px-4
-                py-2
-                text-xs
-                font-semibold
-                text-white
-                ">
-
-                    <Megaphone size={14}/>
-
-                    {
-                        announcement.type
-                    }
-
+              <h2 className="text-2xl font-bold text-white">
+                Micro
+                <span className="text-cyan-400">
+                  Learn
                 </span>
-
-
-            </div>
-
-
-
-
-
-            {/* Content */}
-
-
-            <div className="p-6">
-
-
-
-                <h2 className="
-                line-clamp-2
-                text-xl
-                font-bold
-                text-white
-                ">
-
-                    {
-                        announcement.title
-                    }
-
-                </h2>
-
-
-
-
-                <p className="
-                mt-3
-                line-clamp-3
-                text-sm
-                leading-6
-                text-gray-400
-                ">
-
-                    {
-                        announcement.description
-                    }
-
-                </p>
-
-
-
-
-
-
-                <div className="
-                mt-5
-                space-y-3
-                text-sm
-                text-gray-300
-                ">
-
-
-                    <div className="
-                    flex
-                    items-center
-                    gap-2
-                    ">
-
-                        <User size={16}/>
-
-
-                        {
-                            announcement.author.name
-                        }
-
-
-                    </div>
-
-
-
-
-
-                    <div className="
-                    flex
-                    items-center
-                    gap-2
-                    ">
-
-
-                        <CalendarDays size={16}/>
-
-
-                        {
-                            new Date(
-                                announcement.publishedAt
-                            ).toLocaleDateString()
-                        }
-
-
-                    </div>
-
-
-                </div>
-
-
-
-
-
-
-                <Link
-
-                    href={
-                        `/announcements/${announcement._id}`
-                    }
-
-
-                    className="
-                    mt-6
-                    flex
-                    items-center
-                    justify-center
-                    gap-2
-                    rounded-xl
-                    bg-blue-600
-                    py-3
-                    font-semibold
-                    text-white
-                    transition
-                    hover:bg-blue-700
-                    "
-
-                >
-
-                    View Details
-
-                    <ArrowRight size={18}/>
-
-
-                </Link>
-
-
-
-            </div>
-
-
-
-        </motion.div>
-
-    );
-
+              </h2>
+            </Link>
+
+            <p className="text-center text-gray-400">
+              Official Announcement • Micro Learning Hub
+            </p>
+          </div>
+        </div>
+      </div>
+    </motion.article>
+  );
 }

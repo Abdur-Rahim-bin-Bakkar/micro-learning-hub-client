@@ -16,9 +16,9 @@ export default function Home() {
         <HeroBanner />
         <FeaturedCourses/>
         <LearningCategories />
-        <StudentTestimonials/>
         <PopularTeachers />
         <TopStudents />
+        <StudentTestimonials/>
         <HowItWorks/>
         <WhyChooseUs/>
         <FAQ/>

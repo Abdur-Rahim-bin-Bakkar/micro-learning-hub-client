@@ -9,6 +9,7 @@ import {
     Flame,
     Star,
 } from "lucide-react";
+import Image from "next/image";
 type Student = {
   id: number;
   name: string;
@@ -286,7 +287,9 @@ ${active === index
                                 <div className="flex justify-center">
 
 
-                                    <img
+                                    <Image
+                                    width={500}
+                                    height={400}
 
                                         src={student.image}
 
