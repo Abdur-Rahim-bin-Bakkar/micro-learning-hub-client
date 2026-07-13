@@ -199,7 +199,7 @@ export default function AnnouncementCard({
           >
             <Flag size={16} />
 
-            {announcement.priority.toUpperCase()}
+            {announcement?.priority?.toUpperCase()}
           </span>
         </div>
 

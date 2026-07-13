@@ -101,8 +101,8 @@ export default function Navbar() {
           </div>
 
           <h2 className="text-2xl font-bold text-white">
-            Micro
-            <span className="text-cyan-400">Learn</span>
+            M
+            <span className="text-cyan-400">L</span>
           </h2>
         </Link>
 
