@@ -194,7 +194,7 @@ const HelpPostCard = ({ post }: Props) => {
 
           <div className="flex items-center gap-2 rounded-full bg-slate-100 px-4 py-2 dark:bg-slate-800">
 
-            <span>🙏</span>
+            <span>wow</span>
 
             <span className="font-medium">
               {post.reactions.necessary.length}
@@ -210,11 +210,11 @@ const HelpPostCard = ({ post }: Props) => {
 
         </div>
 
-        <div className="grid grid-cols-4 gap-3">
+        <div className="flex items-center justify-between gap-3 place-items-center">
 
           <button
             onClick={() => handleReaction("like")}
-            className="flex items-center justify-center gap-2 rounded-xl py-3 transition hover:bg-slate-100 dark:hover:bg-slate-800"
+            className="flex cursor-pointer items-center justify-center gap-2 rounded-xl py-2 px-5  transition hover:bg-slate-100 dark:hover:bg-slate-800"
           >
             <HiOutlineHandThumbUp size={20} />
             Like
@@ -222,7 +222,7 @@ const HelpPostCard = ({ post }: Props) => {
           {/* df */}
           <button
             onClick={() => handleReaction("love")}
-            className="flex items-center justify-center gap-2 rounded-xl py-3 transition hover:bg-slate-100 dark:hover:bg-slate-800"
+            className="flex cursor-pointer items-center justify-center gap-2 rounded-xl py-2 px-5 transition hover:bg-slate-100 dark:hover:bg-slate-800"
           >
             <HiOutlineHeart size={20} />
             Love
@@ -230,13 +230,13 @@ const HelpPostCard = ({ post }: Props) => {
 
           <button
             onClick={() => handleReaction("necessary")}
-            className="flex items-center justify-center gap-2 rounded-xl py-3 transition hover:bg-slate-100 dark:hover:bg-slate-800"
+            className="flex cursor-pointer items-center justify-center gap-2 rounded-xl py-3 px-5 transition hover:bg-slate-100 dark:hover:bg-slate-800"
           >
-            🙏
-            Necessary
+            😮
+            wow
           </button>
 
-          <button onClick={() => setShowComment(!showComment)} className="flex items-center justify-center gap-2 rounded-xl py-3 transition hover:bg-slate-100 dark:hover:bg-slate-800">
+          <button onClick={() => setShowComment(!showComment)} className="flex cursor-pointer items-center justify-center gap-2 rounded-xl py-3 transition hover:bg-slate-100 dark:hover:bg-slate-800">
 
             <HiOutlineChatBubbleLeft size={20} />
 
