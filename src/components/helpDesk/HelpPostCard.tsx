@@ -8,6 +8,7 @@ import {
   HiOutlineHeart,
 } from "react-icons/hi2";
 import Image from "next/image";
+import { getUserById } from "@/lib/api/user/getUserById";
 
 interface Props {
   post: HelpPost;
@@ -20,7 +21,8 @@ const roleColor = {
 } as const;
 
 const HelpPostCard = ({ post }: Props) => {
-  console.log(post?.userId,'this is a post')
+  // console.log(post?.userId,'this is a post')
+  // console.log(getUserById(post?.userId),'user info')
   return (
     <article className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-md transition duration-300 hover:shadow-xl dark:border-slate-700 dark:bg-slate-900">
 

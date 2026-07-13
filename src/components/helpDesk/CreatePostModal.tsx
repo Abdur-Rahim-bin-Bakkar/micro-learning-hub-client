@@ -18,8 +18,10 @@ import { useUserSession } from "@/lib/sessions/session";
 interface ReportData {
   image: string;
   issue: string;
-  description: string; 
-  userId:string
+  description: string;
+  userId: string;
+  name: string;
+  uimage: string
 }
 
 export default function CreatePostModal() {
@@ -83,7 +85,9 @@ export default function CreatePostModal() {
         image: imageUrl,
         issue,
         description,
-        userId:session?.user?.id
+        userId: session?.user?.id,
+        uimage: session?.user?.image,
+        name: session?.user?.name
       };
       const result = await createHelpDeskPost(reportData);
       console.log(result, 'pst result')

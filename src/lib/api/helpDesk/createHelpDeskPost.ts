@@ -1,6 +1,7 @@
 'use server'
 import { getUserToken } from "@/lib/sessions/token";
 import { ICreateHelpDeskPost } from "./helpDesk";
+import { revalidatePath } from "next/cache";
 
 export const createHelpDeskPost = async (
     payload: ICreateHelpDeskPost
@@ -22,6 +23,9 @@ export const createHelpDeskPost = async (
         );
 
         const result = await response.json();
+        if(result.success){
+          revalidatePath('/help-desk')
+        }
 
         if (!response.ok) {
           throw new Error(result.message || "Failed to create post.");
