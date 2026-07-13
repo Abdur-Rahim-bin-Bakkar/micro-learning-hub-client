@@ -1,253 +1,231 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
+import { Bug } from "@gravity-ui/icons";
 import {
   Button,
   Input,
+  Label,
   Modal,
-  Spinner,
-  Textarea,
+  Surface,
+  TextArea,
+  TextField,
 } from "@heroui/react";
-import {
-  HiOutlinePhoto,
-  HiOutlineTrash,
-} from "react-icons/hi2";
+import { createHelpDeskPost } from "@/lib/api/helpDesk/createHelpDeskPost";
+import { useUserSession } from "@/lib/sessions/session";
 
-interface Props {
-  open: boolean;
-  onClose: () => void;
+interface ReportData {
+  image: string;
+  issue: string;
+  description: string; 
+  userId:string
 }
 
-const CreatePostModal = ({
-  open,
-  onClose,
-}: Props) => {
-  const fileRef = useRef<HTMLInputElement>(null);
-
-  const [image, setImage] = useState<File | null>(
-    null
-  );
+export default function CreatePostModal() {
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [preview, setPreview] = useState("");
-
   const [issue, setIssue] = useState("");
-  const [description, setDescription] =
-    useState("");
+  const [description, setDescription] = useState("");
+  const [loading, setLoading] = useState(false);
+  const session = useUserSession()
 
-  const [loading, setLoading] =
-    useState(false);
+  const uploadImageToImgBB = async (file: File): Promise<string> => {
+    const apiKey = process.env.NEXT_PUBLIC_IMGBB_KEY;
 
-  const handleImage = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const file = e.target.files?.[0];
-
-    if (!file) return;
-
-    if (preview) {
-      URL.revokeObjectURL(preview);
+    if (!apiKey) {
+      throw new Error("ImgBB API Key not found");
     }
 
-    setImage(file);
+    const formData = new FormData();
+    formData.append("image", file);
 
-    const url = URL.createObjectURL(file);
-
-    setPreview(url);
-  };
-
-  useEffect(() => {
-    return () => {
-      if (preview) {
-        URL.revokeObjectURL(preview);
+    const response = await fetch(
+      `https://api.imgbb.com/1/upload?key=${apiKey}`,
+      {
+        method: "POST",
+        body: formData,
       }
-    };
-  }, [preview]);
+    );
 
-  const removeImage = () => {
-    if (preview) {
-      URL.revokeObjectURL(preview);
+    const data = await response.json();
+
+    console.log("ImgBB Response:", data);
+
+    if (!response.ok || !data.success) {
+      throw new Error(data.error?.message || "Image upload failed");
     }
 
-    setImage(null);
-    setPreview("");
-
-    if (fileRef.current) {
-      fileRef.current.value = "";
-    }
-  };
-
-  const resetForm = () => {
-    removeImage();
-
-    setIssue("");
-    setDescription("");
+    return data.data.display_url;
   };
 
   const handleSubmit = async () => {
-    if (
-      !image ||
-      !issue.trim() ||
-      !description.trim()
-    ) {
+    if (!issue.trim()) {
+      alert("Issue is required");
+      return;
+    }
+
+    if (!description.trim()) {
+      alert("Description is required");
       return;
     }
 
     try {
       setLoading(true);
 
-      const formData = new FormData();
+      let imageUrl = "";
 
-      formData.append("image", image);
-      formData.append("issue", issue);
-      formData.append(
-        "description",
-        description
-      );
+      if (imageFile) {
+        imageUrl = await uploadImageToImgBB(imageFile);
+      }
 
-      console.log(formData);
-
-      await new Promise((resolve) =>
-        setTimeout(resolve, 1000)
-      );
-
-      resetForm();
-
-      onClose();
+      const reportData: ReportData = {
+        image: imageUrl,
+        issue,
+        description,
+        userId:session?.user?.id
+      };
+      const result = await createHelpDeskPost(reportData);
+      console.log(result, 'pst result')
+      setImageFile(null);
+      setPreview("");
+      setIssue("");
+      setDescription("");
+    } catch (error) {
+      console.error(error);
+      alert("Failed to upload image.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <Modal
-      open={open}
-      onOpenChange={(isOpen) => {
-        if (!isOpen) {
-          resetForm();
-          onClose();
-        }
-      }}
-    >
-      <Modal.Backdrop />
+    <Modal>
+      <Button>Create Post</Button>
 
-      <Modal.Container>
-        <Modal.Dialog className="max-w-2xl rounded-3xl">
-          <Modal.CloseTrigger />
+      <Modal.Backdrop className="bg-black/70 backdrop-blur-sm">
+        <Modal.Container placement="auto">
+          <Modal.Dialog className="sm:max-w-xl overflow-hidden rounded-2xl border border-white/10 bg-[#0B1120] text-white shadow-2xl">
+            <Modal.CloseTrigger />
 
-          <Modal.Header>
-            <Modal.Heading className="text-2xl font-bold">
-              Create Help Post
-            </Modal.Heading>
-          </Modal.Header>
+            {/* Header */}
+            <Modal.Header className="border-b border-white/10 px-6 py-5">
+              <Modal.Icon className="bg-orange-500/15 text-cyan-400">
+                <Bug className="size-5" />
+              </Modal.Icon>
 
-          <Modal.Body className="space-y-5">
-            <input
-              hidden
-              ref={fileRef}
-              type="file"
-              accept="image/*"
-              onChange={handleImage}
-            />
+              <div>
+                <Modal.Heading className="text-xl font-semibold text-white">
+                  Create Post
+                </Modal.Heading>
 
-            {!preview ? (
-              <button
-                type="button"
-                onClick={() =>
-                  fileRef.current?.click()
-                }
-                className="flex h-64 w-full flex-col items-center justify-center rounded-2xl border-2 border-dashed border-primary bg-primary/5 transition hover:bg-primary/10"
-              >
-                <HiOutlinePhoto
-                  size={70}
-                  className="text-primary"
-                />
-
-                <h3 className="mt-4 text-lg font-semibold">
-                  Upload Screenshot
-                </h3>
-
-                <p className="text-sm text-default-500">
-                  JPG • PNG • WEBP
+                <p className="mt-1 text-sm text-gray-400">
+                  Upload an image and describe your issue.
                 </p>
-              </button>
-            ) : (
-              <div className="relative h-72 overflow-hidden rounded-2xl">
-                <Image
-                  src={preview}
-                  alt="Preview"
-                  fill
-                  unoptimized
-                  className="object-cover"
-                />
-
-                <Button
-                  isIconOnly
-                  color="danger"
-                  radius="full"
-                  className="absolute right-4 top-4"
-                  onPress={removeImage}
-                >
-                  <HiOutlineTrash
-                    size={18}
-                  />
-                </Button>
               </div>
-            )}
+            </Modal.Header>
 
-            <Input
-              label="Issue / Problem"
-              placeholder="Example: React build error"
-              value={issue}
-              onValueChange={setIssue}
-            />
+            {/* Body */}
+            <Modal.Body className="bg-[#0B1120] p-6">
+              <Surface className="rounded-xl border border-white/10 bg-[#111827] p-6">
+                <div className="space-y-6">
+                  {/* Image */}
 
-            <Textarea
-              label="Description"
-              placeholder="Describe your issue..."
-              value={description}
-              onValueChange={
-                setDescription
-              }
-              minRows={6}
-            />
-          </Modal.Body>
+                  <div className="space-y-3">
+                    <Label className="text-sm font-medium text-gray-200">
+                      Image (Optional)
+                    </Label>
 
-          <Modal.Footer>
-            <Button
-              variant="flat"
-              slot="close"
-              onPress={() => {
-                resetForm();
-                onClose();
-              }}
-            >
-              Cancel
-            </Button>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="block w-full rounded-lg border border-white/10 bg-[#1F2937] p-3 text-sm text-gray-300 file:mr-4 file:rounded-md file:border-0 file:bg-cyan-400 file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-cyan-400"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
 
-            <Button
-              color="primary"
-              onPress={handleSubmit}
-              isDisabled={
-                loading ||
-                !image ||
-                !issue.trim() ||
-                !description.trim()
-              }
-            >
-              {loading ? (
-                <>
-                  <Spinner size="sm" />
-                  Uploading...
-                </>
-              ) : (
-                "Submit Post"
-              )}
-            </Button>
-          </Modal.Footer>
-        </Modal.Dialog>
-      </Modal.Container>
+                        if (!file) return;
+
+                        setImageFile(file);
+                        setPreview(URL.createObjectURL(file));
+                      }}
+                    />
+
+                    {preview && (
+                      <div className="overflow-hidden rounded-xl border border-white/10">
+                        <Image
+                          src={preview}
+                          alt="Preview"
+                          width={180}
+                          height={180}
+                          className="h-44 w-full object-cover"
+                        />
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Issue */}
+
+                  <TextField
+                    className="w-full"
+                    variant="secondary"
+                    isRequired
+                  >
+                    <Label className="text-gray-200">
+                      Issue / Problem
+                    </Label>
+
+                    <Input
+                      placeholder="Enter issue..."
+                      value={issue}
+                      onChange={(e) => setIssue(e.target.value)}
+                    />
+                  </TextField>
+
+                  {/* Description */}
+
+                  <div className="space-y-2">
+                    <Label
+                      isRequired
+                      className="text-sm font-medium text-gray-200"
+                    >
+                      Description
+                    </Label>
+
+                    <TextArea
+                      placeholder="Write description..."
+                      value={description}
+                      onChange={(
+                        e: React.ChangeEvent<HTMLTextAreaElement>
+                      ) => setDescription(e.target.value)}
+                      className="min-h-32 w-full"
+                    />
+                  </div>
+                </div>
+              </Surface>
+            </Modal.Body>
+
+            {/* Footer */}
+
+            <Modal.Footer className="border-t border-white/10 bg-[#0B1120] px-6 py-5">
+              <Button
+                slot="close"
+                variant="secondary"
+              >
+                Cancel
+              </Button>
+
+              <Button
+                slot="close"
+                isLoading={loading}
+                onPress={handleSubmit}
+                className="bg-cyan-400 font-medium text-white hover:bg-cyan-700"
+              >
+                Submit
+              </Button>
+            </Modal.Footer>
+          </Modal.Dialog>
+        </Modal.Container>
+      </Modal.Backdrop>
     </Modal>
   );
-};
-
-export default CreatePostModal;
+}

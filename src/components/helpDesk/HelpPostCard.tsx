@@ -20,15 +20,16 @@ const roleColor = {
 } as const;
 
 const HelpPostCard = ({ post }: Props) => {
+  console.log(post?.userId,'this is a post')
   return (
     <article className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-md transition duration-300 hover:shadow-xl dark:border-slate-700 dark:bg-slate-900">
 
       {/* Header */}
 
       <div className="flex items-center justify-between p-5">
-
+{/* 
         <div className="flex items-center gap-3">
-
+    
           <Image
             height={100}
             width={300}
@@ -62,7 +63,7 @@ const HelpPostCard = ({ post }: Props) => {
 
           </div>
 
-        </div>
+        </div> */}
 
       </div>
 

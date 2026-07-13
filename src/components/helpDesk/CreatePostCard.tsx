@@ -24,7 +24,7 @@ const CreatePostCard = () => {
             width={100}
             height={200}
             alt="user image"
-             unoptimized
+            unoptimized
             src={session?.user?.image}
             className="h-12 w-12 rounded-full"
           />
@@ -33,7 +33,7 @@ const CreatePostCard = () => {
             onClick={() => setIsOpen(true)}
             className="flex-1 rounded-full bg-slate-100 px-5 py-3 text-left text-sm text-slate-500 transition hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
           >
-            What's your problem today?
+            What'es your problem today?
           </button>
 
         </div>
@@ -58,23 +58,13 @@ const CreatePostCard = () => {
             Photo
           </Button>
 
-          <Button
-            color="primary"
-            className="h-12 text-base font-semibold"
-            startContent={<HiOutlinePlusCircle size={22} />}
-            onPress={() => setIsOpen(true)}
-          >
-            Create Post
-          </Button>
+          <CreatePostModal/>
 
         </div>
 
       </div>
 
-      {/* <CreatePostModal
-        open={isOpen}
-        onClose={() => setIsOpen(false)}
-      /> */}
+
     </>
   );
 };

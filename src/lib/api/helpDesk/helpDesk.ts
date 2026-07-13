@@ -21,3 +21,10 @@ export const getHelpPosts = async () => {
 
     return response.json();
 };
+
+export interface ICreateHelpDeskPost {
+    userId: string;
+    issue: string;
+    description: string;
+    image: string;
+}
