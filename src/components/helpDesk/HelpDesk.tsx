@@ -6,7 +6,7 @@ import PostList from "./PostList";
 
 const HelpDesk = ({ PostData }: HelpDeskProps) => {
     return (
-        <section className="min-h-screen bg-slate-50 dark:bg-[#0B1120] py-10">
+        <section className="min-h-screen bg-gradient-to-br from-[#0B0F14] via-[#111827] to-[#1E293B] dark:bg-[#0B1120] py-10">
             <div className="mx-auto max-w-7xl px-5">
 
                 {/* Header */}
@@ -91,7 +91,7 @@ const HelpDesk = ({ PostData }: HelpDeskProps) => {
 
                 {/* Create Post */}
 
-                {/* <CreatePostCard /> */}
+                <CreatePostCard />
 
                 {/* Posts */}
 

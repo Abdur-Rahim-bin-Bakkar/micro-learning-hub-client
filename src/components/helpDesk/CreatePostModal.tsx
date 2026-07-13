@@ -1,17 +1,14 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import {
   Button,
   Input,
   Modal,
-  ModalBody,
-  ModalFooter,
-  ModalHeader,
   Spinner,
-  TextArea,
+  Textarea,
 } from "@heroui/react";
-import Image from "next/image";
-import { useRef, useState } from "react";
 import {
   HiOutlinePhoto,
   HiOutlineTrash,
@@ -22,16 +19,23 @@ interface Props {
   onClose: () => void;
 }
 
-const CreatePostModal = ({ open, onClose }: Props) => {
+const CreatePostModal = ({
+  open,
+  onClose,
+}: Props) => {
   const fileRef = useRef<HTMLInputElement>(null);
 
-  const [image, setImage] = useState<File | null>(null);
+  const [image, setImage] = useState<File | null>(
+    null
+  );
   const [preview, setPreview] = useState("");
 
   const [issue, setIssue] = useState("");
-  const [description, setDescription] = useState("");
+  const [description, setDescription] =
+    useState("");
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] =
+    useState(false);
 
   const handleImage = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -40,12 +44,30 @@ const CreatePostModal = ({ open, onClose }: Props) => {
 
     if (!file) return;
 
+    if (preview) {
+      URL.revokeObjectURL(preview);
+    }
+
     setImage(file);
 
-    setPreview(URL.createObjectURL(file));
+    const url = URL.createObjectURL(file);
+
+    setPreview(url);
   };
 
+  useEffect(() => {
+    return () => {
+      if (preview) {
+        URL.revokeObjectURL(preview);
+      }
+    };
+  }, [preview]);
+
   const removeImage = () => {
+    if (preview) {
+      URL.revokeObjectURL(preview);
+    }
+
     setImage(null);
     setPreview("");
 
@@ -54,47 +76,71 @@ const CreatePostModal = ({ open, onClose }: Props) => {
     }
   };
 
+  const resetForm = () => {
+    removeImage();
+
+    setIssue("");
+    setDescription("");
+  };
+
   const handleSubmit = async () => {
-    if (!image || !issue || !description) return;
+    if (
+      !image ||
+      !issue.trim() ||
+      !description.trim()
+    ) {
+      return;
+    }
 
-    setLoading(true);
+    try {
+      setLoading(true);
 
-    setTimeout(() => {
-      console.log({
-        image,
-        issue,
-        description,
-        userId: "USER_ID_FROM_SESSION",
-      });
+      const formData = new FormData();
 
-      setLoading(false);
+      formData.append("image", image);
+      formData.append("issue", issue);
+      formData.append(
+        "description",
+        description
+      );
 
-      setImage(null);
-      setPreview("");
-      setIssue("");
-      setDescription("");
+      console.log(formData);
+
+      await new Promise((resolve) =>
+        setTimeout(resolve, 1000)
+      );
+
+      resetForm();
 
       onClose();
-    }, 800);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <Modal
-      isOpen={open}
-      onOpenChange={onClose}
-      size="2xl"
-      scrollBehavior="inside"
+      open={open}
+      onOpenChange={(isOpen) => {
+        if (!isOpen) {
+          resetForm();
+          onClose();
+        }
+      }}
     >
-      <div>
-        <>
-          <ModalHeader>
-            <h2 className="text-2xl font-bold">
+      <Modal.Backdrop />
+
+      <Modal.Container>
+        <Modal.Dialog className="max-w-2xl rounded-3xl">
+          <Modal.CloseTrigger />
+
+          <Modal.Header>
+            <Modal.Heading className="text-2xl font-bold">
               Create Help Post
-            </h2>
-          </ModalHeader>
+            </Modal.Heading>
+          </Modal.Header>
 
-          <ModalBody>
-
+          <Modal.Body className="space-y-5">
             <input
               hidden
               ref={fileRef}
@@ -105,41 +151,46 @@ const CreatePostModal = ({ open, onClose }: Props) => {
 
             {!preview ? (
               <button
-                onClick={() => fileRef.current?.click()}
-                className="flex h-60 w-full flex-col items-center justify-center rounded-2xl border-2 border-dashed border-blue-400 bg-blue-50 transition hover:bg-blue-100"
+                type="button"
+                onClick={() =>
+                  fileRef.current?.click()
+                }
+                className="flex h-64 w-full flex-col items-center justify-center rounded-2xl border-2 border-dashed border-primary bg-primary/5 transition hover:bg-primary/10"
               >
                 <HiOutlinePhoto
                   size={70}
-                  className="text-blue-500"
+                  className="text-primary"
                 />
 
-                <p className="mt-4 font-semibold">
-                  Upload Image
-                </p>
+                <h3 className="mt-4 text-lg font-semibold">
+                  Upload Screenshot
+                </h3>
 
-                <span className="text-sm text-gray-500">
-                  JPG PNG WEBP
-                </span>
+                <p className="text-sm text-default-500">
+                  JPG • PNG • WEBP
+                </p>
               </button>
             ) : (
-              <div className="relative h-72 w-full overflow-hidden rounded-2xl">
-
+              <div className="relative h-72 overflow-hidden rounded-2xl">
                 <Image
-                  fill
                   src={preview}
-                  alt=""
+                  alt="Preview"
+                  fill
+                  unoptimized
                   className="object-cover"
                 />
 
                 <Button
                   isIconOnly
                   color="danger"
-                  className="absolute right-3 top-3 z-20"
+                  radius="full"
+                  className="absolute right-4 top-4"
                   onPress={removeImage}
                 >
-                  <HiOutlineTrash size={20} />
+                  <HiOutlineTrash
+                    size={18}
+                  />
                 </Button>
-
               </div>
             )}
 
@@ -148,25 +199,27 @@ const CreatePostModal = ({ open, onClose }: Props) => {
               placeholder="Example: React build error"
               value={issue}
               onValueChange={setIssue}
-              isRequired
             />
 
-            <TextArea
+            <Textarea
               label="Description"
-              placeholder="Describe your problem..."
-              minRows={6}
+              placeholder="Describe your issue..."
               value={description}
-              onValueChange={setDescription}
-              isRequired
+              onValueChange={
+                setDescription
+              }
+              minRows={6}
             />
+          </Modal.Body>
 
-          </ModalBody>
-
-          <ModalFooter>
-
+          <Modal.Footer>
             <Button
               variant="flat"
-              onPress={onClose}
+              slot="close"
+              onPress={() => {
+                resetForm();
+                onClose();
+              }}
             >
               Cancel
             </Button>
@@ -175,25 +228,24 @@ const CreatePostModal = ({ open, onClose }: Props) => {
               color="primary"
               onPress={handleSubmit}
               isDisabled={
+                loading ||
                 !image ||
-                !issue ||
-                !description ||
-                loading
+                !issue.trim() ||
+                !description.trim()
               }
             >
               {loading ? (
                 <>
-                  <Spinner size="sm" color="white" />
+                  <Spinner size="sm" />
                   Uploading...
                 </>
               ) : (
                 "Submit Post"
               )}
             </Button>
-
-          </ModalFooter>
-        </>
-      </div>
+          </Modal.Footer>
+        </Modal.Dialog>
+      </Modal.Container>
     </Modal>
   );
 };

@@ -76,7 +76,7 @@ export default function Navbar() {
         },
       ]
       : []),
-      ...(user?.role === 'admin' || user?.role === 'student'
+      ...(user?.role === 'admin' || user?.role === 'student'  || user?.role === 'teacher'
       ? [
         {
           title: "Help Desk",

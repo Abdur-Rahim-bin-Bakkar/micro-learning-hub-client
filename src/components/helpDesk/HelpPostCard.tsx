@@ -7,6 +7,7 @@ import {
   HiOutlineChatBubbleLeft,
   HiOutlineHeart,
 } from "react-icons/hi2";
+import Image from "next/image";
 
 interface Props {
   post: HelpPost;
@@ -28,9 +29,13 @@ const HelpPostCard = ({ post }: Props) => {
 
         <div className="flex items-center gap-3">
 
-          <Avatar
+          <Image
+            height={100}
+            width={300}
+            alt="image logo"
             src={post.user.photo}
-            size="lg"
+            unoptimized
+            className="w-15 h-15 rounded-full"
           />
 
           <div>

@@ -1,41 +1,68 @@
 "use client";
 
-import { Button, Avatar } from "@heroui/react";
-import { HiOutlinePlus } from "react-icons/hi2";
 import { useState } from "react";
+import { Avatar, Button } from "@heroui/react";
+import { HiOutlinePlusCircle } from "react-icons/hi2";
+import { MdOutlinePhotoLibrary } from "react-icons/md";
 import CreatePostModal from "./CreatePostModal";
+import { useUserSession } from "@/lib/sessions/session";
+import Image from "next/image";
 
 const CreatePostCard = () => {
-  const [open, setOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const session = useUserSession()
 
   return (
     <>
-      <div className="mx-auto max-w-3xl rounded-3xl border border-slate-200 bg-white p-5 shadow-lg dark:border-slate-700 dark:bg-slate-900">
+      <div className="mx-auto mb-8 max-w-3xl rounded-3xl border  bg-gradient-to-br from-[#0B0F14] via-[#111827] to-[#1E293B] p-5 shadow-lg transition-all duration-300 hover:shadow-xl border-slate-700 dark:bg-slate-900">
+
+        {/* Top */}
 
         <div className="flex items-center gap-4">
 
-          <Avatar
-            size="lg"
-            src="https://i.pravatar.cc/300"
+          <Image
+            width={100}
+            height={200}
+            alt="user image"
+             unoptimized
+            src={session?.user?.image}
+            className="h-12 w-12 rounded-full"
           />
 
           <button
-            onClick={() => setOpen(true)}
-            className="flex-1 rounded-full bg-slate-100 px-6 py-4 text-left text-slate-500 transition hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
+            onClick={() => setIsOpen(true)}
+            className="flex-1 rounded-full bg-slate-100 px-5 py-3 text-left text-sm text-slate-500 transition hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
           >
-            Ask a question or share your problem...
+            What's your problem today?
           </button>
 
         </div>
 
-        <div className="mt-5">
+        <div className="my-5 h-px bg-slate-200 dark:bg-slate-700" />
+
+        {/* Bottom */}
+
+        <div className="grid grid-cols-2 gap-4">
 
           <Button
-            onPress={() => setOpen(true)}
-            radius="full"
+            variant="light"
+            className="h-12 justify-center text-base font-medium"
+            startContent={
+              <MdOutlinePhotoLibrary
+                className="text-green-500"
+                size={22}
+              />
+            }
+            onPress={() => setIsOpen(true)}
+          >
+            Photo
+          </Button>
+
+          <Button
             color="primary"
-            className="w-full h-12 text-base font-semibold"
-            startContent={<HiOutlinePlus size={20} />}
+            className="h-12 text-base font-semibold"
+            startContent={<HiOutlinePlusCircle size={22} />}
+            onPress={() => setIsOpen(true)}
           >
             Create Post
           </Button>
@@ -44,10 +71,10 @@ const CreatePostCard = () => {
 
       </div>
 
-      <CreatePostModal
-        open={open}
-        onClose={() => setOpen(false)}
-      />
+      {/* <CreatePostModal
+        open={isOpen}
+        onClose={() => setIsOpen(false)}
+      /> */}
     </>
   );
 };
