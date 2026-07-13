@@ -1,19 +1,25 @@
-const handleReaction = async (
-  reaction: "like" | "love" | "necessary"
-) => {
-  if (!session?.user) return;
+import { getUserToken } from "@/lib/sessions/token";
 
-  try {
-    const res = await reactPost({
-      postId: post._id,
-      userId: session.user.id,
-      reaction,
-    });
+interface ReactionPayload {
+  postId: string;
+  userId: string;
+  reaction: "like" | "love" | "necessary";
+}
 
-    if (res.success) {
-      router.refresh();
+export const reactPost = async (payload: ReactionPayload) => {
+  const token = await getUserToken();
+
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/helpdesk/${payload.postId}/react`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(payload),
     }
-  } catch (error) {
-    console.error(error);
-  }
+  );
+
+  return response.json();
 };

@@ -13,6 +13,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { addComment } from "@/lib/api/helpDesk/addComment";
 import { useUserSession } from "@/lib/sessions/session";
+import { reactPost } from "@/lib/api/helpDesk/reactPost";
+// import { reactPost } from "@/lib/api/helpDesk/reactPost";
 interface Props {
   post: HelpPost;
 }
@@ -58,6 +60,33 @@ const HelpPostCard = ({ post }: Props) => {
       setComment("");
       setShowComment(false);
       router.refresh();
+    }
+  };
+  const handleReaction = async (
+    reaction: "like" | "love" | "necessary"
+  ) => {
+    if (!session?.user) return;
+
+    try {
+      const res = await reactPost({
+        postId: post._id,
+        userId: session.user.id,
+        reaction,
+      });
+
+      if (res.success) {
+        router.refresh();
+      }
+      const currentUserId = session?.user?.id ?? "";
+
+      const isLiked = post.reactions.like.includes(currentUserId);
+
+      const isLoved = post.reactions.love.includes(currentUserId);
+
+      const isNecessary =
+        post.reactions.necessary.includes(currentUserId);
+    } catch (error) {
+      console.error(error);
     }
   };
   return (
@@ -141,42 +170,70 @@ const HelpPostCard = ({ post }: Props) => {
 
       <div className="border-t border-slate-200 p-5 dark:border-slate-700">
 
-        <div className="mb-4 flex items-center justify-between text-sm text-gray-500">
+        <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
 
-          <span>
-            👍 {post.reactions.like.length} Likes
-          </span>
+          <div className="flex items-center gap-2 rounded-full bg-slate-100 px-4 py-2 dark:bg-slate-800">
 
-          <span>
+            <span>👍</span>
+
+            <span className="font-medium">
+              {post.reactions.like.length}
+            </span>
+
+          </div>
+
+          <div className="flex items-center gap-2 rounded-full bg-slate-100 px-4 py-2 dark:bg-slate-800">
+
+            <span>❤️</span>
+
+            <span className="font-medium">
+              {post.reactions.love.length}
+            </span>
+
+          </div>
+
+          <div className="flex items-center gap-2 rounded-full bg-slate-100 px-4 py-2 dark:bg-slate-800">
+
+            <span>🙏</span>
+
+            <span className="font-medium">
+              {post.reactions.necessary.length}
+            </span>
+
+          </div>
+
+          <div className="ml-auto text-sm text-gray-500">
+
             💬 {post.comments.length} Comments
-          </span>
+
+          </div>
 
         </div>
 
         <div className="grid grid-cols-4 gap-3">
 
-          <button className="flex items-center justify-center gap-2 rounded-xl py-3 transition hover:bg-slate-100 dark:hover:bg-slate-800">
-
+          <button
+            onClick={() => handleReaction("like")}
+            className="flex items-center justify-center gap-2 rounded-xl py-3 transition hover:bg-slate-100 dark:hover:bg-slate-800"
+          >
             <HiOutlineHandThumbUp size={20} />
-
             Like
-
           </button>
-
-          <button className="flex items-center justify-center gap-2 rounded-xl py-3 transition hover:bg-slate-100 dark:hover:bg-slate-800">
-
+          {/* df */}
+          <button
+            onClick={() => handleReaction("love")}
+            className="flex items-center justify-center gap-2 rounded-xl py-3 transition hover:bg-slate-100 dark:hover:bg-slate-800"
+          >
             <HiOutlineHeart size={20} />
-
             Love
-
           </button>
 
-          <button className="flex items-center justify-center gap-2 rounded-xl py-3 transition hover:bg-slate-100 dark:hover:bg-slate-800">
-
+          <button
+            onClick={() => handleReaction("necessary")}
+            className="flex items-center justify-center gap-2 rounded-xl py-3 transition hover:bg-slate-100 dark:hover:bg-slate-800"
+          >
             🙏
-
             Necessary
-
           </button>
 
           <button onClick={() => setShowComment(!showComment)} className="flex items-center justify-center gap-2 rounded-xl py-3 transition hover:bg-slate-100 dark:hover:bg-slate-800">
