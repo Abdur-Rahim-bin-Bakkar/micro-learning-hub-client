@@ -68,6 +68,10 @@ export default function Navbar() {
       title: "About",
       href: "/about",
     },
+    {
+      title: "Contact",
+      href: "/contact",
+    },
     ...(user?.role === 'user'
       ? [
         {

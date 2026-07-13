@@ -29,33 +29,38 @@ const HelpPostCard = ({ post }: Props) => {
       {/* Header */}
 
       <div className="flex items-center justify-between p-5">
-{/* 
+
         <div className="flex items-center gap-3">
-    
-          <Image
-            height={100}
-            width={300}
-            alt="image logo"
-            src={post.user.photo}
-            unoptimized
-            className="w-15 h-15 rounded-full"
-          />
+          {
+            post?.uimage && <Image
+              height={100}
+              width={300}
+              alt="image logo"
+              src={post.uimage}
+              unoptimized
+              className="w-15 h-15 rounded-full"
+            />
+          }
+
 
           <div>
+            {post?.name
+              &&
 
-            <h2 className="font-semibold text-lg">
-              {post.user.name}
-            </h2>
+              <h2 className="font-semibold text-lg">
+                  {post?.name}
+              </h2>
+            }
 
             <div className="mt-1 flex items-center gap-2">
 
-              <Chip
+              {/* <Chip
                 size="sm"
                 color={roleColor[post.user.role]}
                 variant="flat"
               >
                 {post.user.role}
-              </Chip>
+              </Chip> */}
 
               <span className="text-xs text-gray-500">
                 {new Date(post.createdAt).toLocaleDateString()}
@@ -65,14 +70,16 @@ const HelpPostCard = ({ post }: Props) => {
 
           </div>
 
-        </div> */}
+        </div>
 
       </div>
 
       {/* Image */}
 
       {post.image && (
-        <img
+        <Image
+        width={500}
+        height={500}
           src={post.image}
           alt={post.issue}
           className="h-[350px] w-full object-cover"

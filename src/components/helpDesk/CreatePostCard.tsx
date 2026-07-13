@@ -19,15 +19,18 @@ const CreatePostCard = () => {
         {/* Top */}
 
         <div className="flex items-center gap-4">
+          {
+            session?.user?.image &&
+            < Image
+              width={100}
+              height={200}
+              alt="user image"
+              unoptimized
+              src={session?.user?.image}
+              className="h-12 w-12 rounded-full"
+            />
+          }
 
-          <Image
-            width={100}
-            height={200}
-            alt="user image"
-            unoptimized
-            src={session?.user?.image}
-            className="h-12 w-12 rounded-full"
-          />
 
           <button
             onClick={() => setIsOpen(true)}
@@ -38,29 +41,13 @@ const CreatePostCard = () => {
 
         </div>
 
+
         <div className="my-5 h-px bg-slate-200 dark:bg-slate-700" />
+        <CreatePostModal />
 
         {/* Bottom */}
 
-        <div className="grid grid-cols-2 gap-4">
 
-          <Button
-            variant="light"
-            className="h-12 justify-center text-base font-medium"
-            startContent={
-              <MdOutlinePhotoLibrary
-                className="text-green-500"
-                size={22}
-              />
-            }
-            onPress={() => setIsOpen(true)}
-          >
-            Photo
-          </Button>
-
-          <CreatePostModal/>
-
-        </div>
 
       </div>
 

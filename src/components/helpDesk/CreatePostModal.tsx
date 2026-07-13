@@ -105,7 +105,7 @@ export default function CreatePostModal() {
 
   return (
     <Modal>
-      <Button>Create Post</Button>
+      <Button className={'w-full'}>Create Post</Button>
 
       <Modal.Backdrop className="bg-black/70 backdrop-blur-sm">
         <Modal.Container placement="auto">
