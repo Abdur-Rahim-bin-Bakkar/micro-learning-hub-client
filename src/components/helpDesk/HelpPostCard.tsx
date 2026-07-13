@@ -1,6 +1,6 @@
 "use client";
 
-import { Avatar, Chip } from "@heroui/react";
+import { Avatar, Chip, TextArea } from "@heroui/react";
 import { HelpPost } from "./types";
 import {
   HiOutlineHandThumbUp,
@@ -9,7 +9,10 @@ import {
 } from "react-icons/hi2";
 import Image from "next/image";
 import { getUserById } from "@/lib/api/user/getUserById";
-
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { addComment } from "@/lib/api/helpDesk/addComment";
+import { useUserSession } from "@/lib/sessions/session";
 interface Props {
   post: HelpPost;
 }
@@ -21,8 +24,42 @@ const roleColor = {
 } as const;
 
 const HelpPostCard = ({ post }: Props) => {
+  const session = useUserSession()
+  const router = useRouter();
+
+  const [showComment, setShowComment] = useState(false);
+  const [comment, setComment] = useState("");
+  // const router = useRouter();
+
+  // const [showComment, setShowComment] = useState(false);
+
+  // const [comment, setComment] = useState("");
   // console.log(post?.userId,'this is a post')
   // console.log(getUserById(post?.userId),'user info')
+  const handleComment = async () => {
+    if (!comment.trim()) return;
+    if (!session?.user) {
+      return;
+    }
+
+    const body = {
+      postId: post._id,
+      userId: session.user.id,
+      name: session.user.name,
+      photo: session.user.image,
+      comment,
+    };
+    console.log(body)
+
+    const res = await addComment(body);
+    console.log(res, 'comment result')
+
+    if (res.success) {
+      setComment("");
+      setShowComment(false);
+      router.refresh();
+    }
+  };
   return (
     <article className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-md transition duration-300 hover:shadow-xl dark:border-slate-700 dark:bg-slate-900">
 
@@ -48,7 +85,7 @@ const HelpPostCard = ({ post }: Props) => {
               &&
 
               <h2 className="font-semibold text-lg">
-                  {post?.name}
+                {post?.name}
               </h2>
             }
 
@@ -78,8 +115,8 @@ const HelpPostCard = ({ post }: Props) => {
 
       {post.image && (
         <Image
-        width={500}
-        height={500}
+          width={500}
+          height={500}
           src={post.image}
           alt={post.issue}
           className="h-[350px] w-full object-cover"
@@ -142,7 +179,7 @@ const HelpPostCard = ({ post }: Props) => {
 
           </button>
 
-          <button className="flex items-center justify-center gap-2 rounded-xl py-3 transition hover:bg-slate-100 dark:hover:bg-slate-800">
+          <button onClick={() => setShowComment(!showComment)} className="flex items-center justify-center gap-2 rounded-xl py-3 transition hover:bg-slate-100 dark:hover:bg-slate-800">
 
             <HiOutlineChatBubbleLeft size={20} />
 
@@ -151,6 +188,62 @@ const HelpPostCard = ({ post }: Props) => {
           </button>
 
         </div>
+        {/* Comment Box */}
+        {showComment && (
+          <div className="mt-6 space-y-3">
+            <TextArea
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              placeholder="Write a comment..."
+              rows={3}
+              className="w-full rounded-xl border border-slate-300 p-3 outline-none focus:border-blue-500 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+            />
+
+            <div className="flex justify-end">
+              <button
+                onClick={handleComment}
+                className="rounded-xl bg-blue-600 px-5 py-2 text-white transition hover:bg-blue-700"
+              >
+                Post Comment
+              </button>
+            </div>
+          </div>
+        )}
+        {/* Comments */}
+        {post.comments.length > 0 && (
+          <div className="mt-8 space-y-4">
+            {post.comments.map((item, index) => (
+              <div
+                key={index}
+                className="flex gap-3 rounded-2xl bg-slate-100 p-4 dark:bg-slate-800"
+              >
+                <Image
+                  src={item.photo}
+                  alt={item.name}
+                  width={45}
+                  height={45}
+                  className="h-11 w-11 rounded-full object-cover"
+                />
+
+                <div className="flex-1">
+                  <div className="flex items-center justify-between">
+                    <h4 className="font-semibold">
+                      {item.name}
+                    </h4>
+
+                    <span className="text-xs text-gray-500">
+                      {new Date(item.createdAt).toLocaleString()}
+                    </span>
+                  </div>
+
+                  <p className="mt-2 text-gray-700 dark:text-gray-300">
+                    {item.comment}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
 
       </div>
 
