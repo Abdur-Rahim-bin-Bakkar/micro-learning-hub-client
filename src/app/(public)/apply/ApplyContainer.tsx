@@ -39,7 +39,7 @@ export default function ApplyPageContainer() {
     }, [user, isPending]);
     const role = user?.role;
 
-    if (role === 'student' || role === 'teacher') {
+    if (role === 'student' || role === 'teacher' || role === 'admin') {
         return (
             <div className="relative overflow-hidden  h-screen border border-cyan-500/30 bg-slate-950 p-6 md:p-8 text-center shadow-[0_0_50px_rgba(6,182,212,0.1)] backdrop-blur-md">
 
