@@ -4,234 +4,125 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import {
   ArrowRight,
-  BookOpen,
   GraduationCap,
   PlayCircle,
-  Users,
 } from "lucide-react";
-
-const stats = [
-  {
-    icon: BookOpen,
-    value: "500+",
-    label: "Micro Courses",
-  },
-  {
-    icon: Users,
-    value: "10K+",
-    label: "Active Learners",
-  },
-  {
-    icon: GraduationCap,
-    value: "200+",
-    label: "Expert Mentors",
-  },
-];
 
 export default function HeroBanner() {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-[#0B0F14] via-[#111827] to-[#1E293B] text-white">
+    <section className="relative overflow-hidden bg-[#070a0e] py-24 text-white md:py-32">
       
-      {/* Background Glow */}
-      <div className="absolute -top-32 -right-32 h-96 w-96 rounded-full bg-blue-500/20 blur-3xl" />
-      <div className="absolute -bottom-32 -left-32 h-96 w-96 rounded-full bg-purple-500/20 blur-3xl" />
+      {/* Background Ambient Cyber Lights */}
+      <div className="absolute right-0 top-0 h-[400px] w-[500px] rounded-full bg-cyan-500/10 blur-[120px] pointer-events-none" />
+      <div className="absolute left-0 bottom-0 h-[400px] w-[500px] rounded-full bg-blue-600/5 blur-[120px] pointer-events-none" />
 
-      <div className="container mx-auto px-6 py-20 lg:px-8 lg:py-28">
+      <div className="container relative z-10 mx-auto px-6 lg:px-8">
         <div className="grid items-center gap-12 lg:grid-cols-2">
 
           {/* Left Content */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7 }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
           >
-            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-blue-400/30 bg-blue-500/10 px-4 py-2 text-sm text-blue-300">
-              <GraduationCap size={18} />
+            {/* Top Badge */}
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-4 py-2 text-xs font-bold uppercase tracking-widest text-cyan-400">
+              <GraduationCap size={16} />
               Learn Smarter, Grow Faster
             </div>
 
-            <h1 className="text-4xl font-extrabold leading-tight sm:text-5xl lg:text-6xl">
+            {/* Main Heading with Cyan Gradient */}
+            <h1 className="text-4xl font-extrabold leading-tight sm:text-5xl lg:text-6xl tracking-tight">
               Master Skills with
-              <span className="block bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+              <span className="block bg-gradient-to-r from-cyan-400 via-cyan-500 to-blue-500 bg-clip-text text-transparent mt-1">
                 Micro Learning
               </span>
             </h1>
 
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-gray-300">
+            {/* Description Text */}
+            <p className="mt-6 max-w-xl text-base md:text-lg leading-relaxed text-slate-400 font-medium">
               Short, focused and practical lessons designed to help students,
               teachers and professionals build real-world skills faster.
             </p>
 
-
-            {/* Buttons */}
-            <div className="mt-8 flex flex-wrap gap-4">
-
-              <Link
-                href="/courses"
-                className="group flex items-center gap-2 rounded-xl bg-blue-600 px-6 py-3 font-semibold transition hover:bg-blue-700"
-              >
-                Explore Courses
-
-                <ArrowRight
-                  size={18}
-                  className="transition group-hover:translate-x-1"
-                />
+            {/* Interactive Call to Action Buttons */}
+            <div className="mt-10 flex flex-wrap gap-4">
+              <Link href="/courses" className="group cursor-pointer">
+                <div className="flex items-center gap-2 rounded-xl bg-cyan-500 px-7 py-4 text-sm font-black uppercase tracking-widest text-slate-950 transition-all duration-300 hover:bg-cyan-400 hover:shadow-[0_0_30px_rgba(6,182,212,0.4)] active:scale-[0.98]">
+                  Explore Courses
+                  <ArrowRight
+                    size={16}
+                    className="transition-transform duration-300 group-hover:translate-x-1.5"
+                  />
+                </div>
               </Link>
 
-
-              <Link
-                href="/about"
-                className="flex items-center gap-2 rounded-xl border border-gray-600 px-6 py-3 font-semibold transition hover:bg-white/10"
-              >
-                <PlayCircle size={18}/>
-                Learn More
+              <Link href="/about" className="cursor-pointer">
+                <div className="flex items-center gap-2 rounded-xl border border-slate-800 bg-slate-900/40 px-7 py-4 text-sm font-bold uppercase tracking-widest text-slate-300 transition-all duration-300 hover:border-cyan-500/40 hover:bg-slate-900 hover:text-cyan-400 active:scale-[0.98]">
+                  <PlayCircle size={16} />
+                  Learn More
+                </div>
               </Link>
-
             </div>
-
-
-            {/* Stats */}
-            <div className="mt-12 grid grid-cols-3 gap-4">
-
-              {stats.map((item, index) => {
-                const Icon = item.icon;
-
-                return (
-                  <motion.div
-                    key={index}
-                    initial={{
-                      opacity:0,
-                      y:20
-                    }}
-                    animate={{
-                      opacity:1,
-                      y:0
-                    }}
-                    transition={{
-                      delay:index * 0.2
-                    }}
-                    className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur"
-                  >
-
-                    <Icon
-                      className="mb-3 text-blue-400"
-                      size={25}
-                    />
-
-                    <h3 className="text-xl font-bold">
-                      {item.value}
-                    </h3>
-
-                    <p className="text-sm text-gray-400">
-                      {item.label}
-                    </p>
-
-                  </motion.div>
-                );
-              })}
-
-            </div>
-
-
           </motion.div>
 
-
-
-          {/* Right Illustration */}
+          {/* Right Illustration Area */}
           <motion.div
-            initial={{
-              opacity:0,
-              scale:0.8
-            }}
-            animate={{
-              opacity:1,
-              scale:1
-            }}
-            transition={{
-              duration:0.8
-            }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
             className="relative"
           >
-
-            <div className="relative rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur-xl">
-
-              <div className="rounded-2xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 p-8">
-
-                <div className="flex h-72 items-center justify-center rounded-2xl bg-[#0B0F14]">
-
+            {/* Outer Mesh Card */}
+            <div className="relative rounded-3xl border border-slate-800/80 bg-slate-900/20 p-6 shadow-2xl backdrop-blur-md transition-all duration-300 hover:border-cyan-500/20">
+              
+              {/* Inner Showcase Box */}
+              <div className="rounded-2xl bg-gradient-to-br from-cyan-500/10 to-blue-500/5 p-8 border border-slate-800/40">
+                <div className="flex h-72 items-center justify-center rounded-2xl bg-[#030712] border border-slate-900 shadow-inner">
                   <div className="text-center">
-
-                    <GraduationCap
-                      size={80}
-                      className="mx-auto text-blue-400"
-                    />
-
-                    <h3 className="mt-5 text-2xl font-bold">
+                    <div className="inline-flex h-20 w-20 items-center justify-center rounded-2xl border border-slate-800 bg-slate-900/60 text-cyan-400 shadow-lg">
+                      <GraduationCap size={44} />
+                    </div>
+                    <h3 className="mt-6 text-2xl font-extrabold tracking-wide text-white">
                       Start Learning Today
                     </h3>
-
-                    <p className="mt-2 text-gray-400">
+                    <p className="mt-2 text-sm text-slate-400 font-medium">
                       Knowledge in small steps
                     </p>
-
                   </div>
-
                 </div>
-
               </div>
 
-
-              {/* Floating Card */}
-
+              {/* Floating Top Card (TypeScript Mastery) */}
               <motion.div
-                animate={{
-                  y:[0,-10,0]
-                }}
-                transition={{
-                  repeat:Infinity,
-                  duration:3
-                }}
-                className="absolute -right-5 top-10 rounded-xl border border-white/10 bg-[#111827] px-5 py-4 shadow-xl"
+                animate={{ y: [0, -10, 0] }}
+                transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+                className="absolute -right-4 top-10 rounded-xl border border-slate-800 bg-[#090d16]/90 px-5 py-4 shadow-2xl backdrop-blur-sm"
               >
-
-                <p className="text-sm text-gray-400">
+                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
                   New Course Added
                 </p>
-
-                <h4 className="font-bold">
+                <h4 className="font-extrabold text-sm text-white mt-0.5">
                   TypeScript Mastery 🚀
                 </h4>
-
               </motion.div>
 
-
+              {/* Floating Bottom Card (Online Count) */}
               <motion.div
-                animate={{
-                  y:[0,10,0]
-                }}
-                transition={{
-                  repeat:Infinity,
-                  duration:4
-                }}
-                className="absolute -bottom-5 -left-5 rounded-xl border border-white/10 bg-[#111827] px-5 py-4 shadow-xl"
+                animate={{ y: [0, 10, 0] }}
+                transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+                className="absolute -bottom-4 -left-4 rounded-xl border border-slate-800 bg-[#090d16]/90 px-5 py-4 shadow-2xl backdrop-blur-sm"
               >
-
-                <p className="text-sm text-gray-400">
+                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
                   Students Online
                 </p>
-
-                <h4 className="font-bold text-green-400">
+                <h4 className="font-black text-base text-emerald-400 mt-0.5 tracking-wide">
                   2,540+
                 </h4>
-
               </motion.div>
 
-
             </div>
-
-
           </motion.div>
-
 
         </div>
       </div>
