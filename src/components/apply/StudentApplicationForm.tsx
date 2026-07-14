@@ -198,7 +198,7 @@ export default function StudentApplicationForm() {
                 >
                     <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full transition-transform duration-700 group-hover:translate-x-full" />
 
-                    <span className="relative flex items-center gap-2">
+                    <span className="relative cursor-pointer flex items-center gap-2">
                         Continue to Payment
                     </span>
                 </button>

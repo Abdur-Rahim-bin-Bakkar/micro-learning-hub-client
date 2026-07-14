@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
@@ -7,17 +9,64 @@ import {
     HiArrowRight,
     HiSparkles,
 } from "react-icons/hi2";
+import { confirmPayment } from "@/lib/api/pament/confirmPayment";
+
+// import { confirmPayment } from "@/lib/api/payment/confirmPayment";
 
 export default function PaymentSuccessPage() {
+
+    const searchParams = useSearchParams();
+
+    const sessionId =
+        searchParams.get("session_id");
+
+    const [loading, setLoading] =
+        useState(true);
+
+    const [verified, setVerified] =
+        useState(false);
+
+    useEffect(() => {
+
+        if (!sessionId) {
+
+            setLoading(false);
+
+            return;
+
+        }
+
+        const verifyPayment = async () => {
+
+            const result =
+                await confirmPayment(sessionId);
+
+            if (result.success) {
+
+                setVerified(true);
+
+            }
+
+            setLoading(false);
+
+        };
+
+        verifyPayment();
+
+    }, [sessionId]);
+
     return (
+
         <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#0B0F14] px-6 py-16">
 
             {/* Background Blur */}
+
             <div className="absolute left-0 top-0 h-72 w-72 rounded-full bg-cyan-500/20 blur-[120px]" />
 
             <div className="absolute bottom-0 right-0 h-80 w-80 rounded-full bg-cyan-500/10 blur-[140px]" />
 
             {/* Grid */}
+
             <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.03)_1px,transparent_1px)] bg-[size:42px_42px]" />
 
             <motion.div
@@ -32,11 +81,12 @@ export default function PaymentSuccessPage() {
                     scale: 1,
                 }}
                 transition={{
-                    duration: 0.6,
+                    duration: .6,
                 }}
-                className="relative z-10 w-full max-w-2xl rounded-3xl border border-white/10 bg-white/5 p-10 backdrop-blur-xl shadow-[0_20px_80px_rgba(6,182,212,0.15)]"
+                className="relative z-10 w-full max-w-2xl rounded-3xl border border-white/10 bg-white/5 p-10 backdrop-blur-xl shadow-[0_20px_80px_rgba(6,182,212,.15)]"
             >
-                {/* Success Icon */}
+
+                {/* Icon */}
 
                 <motion.div
                     initial={{
@@ -54,20 +104,29 @@ export default function PaymentSuccessPage() {
                     }}
                     className="mx-auto flex h-28 w-28 items-center justify-center rounded-full bg-cyan-500/15 ring-8 ring-cyan-500/10"
                 >
+
                     <HiCheckCircle
-                        className="text-cyan-400"
                         size={70}
+                        className="text-cyan-400"
                     />
+
                 </motion.div>
 
                 {/* Badge */}
 
                 <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: .35 }}
+                    initial={{
+                        opacity: 0,
+                    }}
+                    animate={{
+                        opacity: 1,
+                    }}
+                    transition={{
+                        delay: .35,
+                    }}
                     className="mt-8 flex justify-center"
                 >
+
                     <div className="flex items-center gap-2 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-4 py-2 text-sm font-medium text-cyan-300">
 
                         <HiSparkles />
@@ -75,6 +134,7 @@ export default function PaymentSuccessPage() {
                         Payment Successful
 
                     </div>
+
                 </motion.div>
 
                 {/* Title */}
@@ -93,10 +153,15 @@ export default function PaymentSuccessPage() {
                     }}
                     className="mt-8 text-center text-4xl font-extrabold leading-tight text-white"
                 >
+
                     Welcome to
+
                     <span className="block text-cyan-400">
+
                         Micro Learning Hub
+
                     </span>
+
                 </motion.h1>
 
                 {/* Description */}
@@ -113,17 +178,17 @@ export default function PaymentSuccessPage() {
                     }}
                     className="mx-auto mt-6 max-w-xl text-center text-lg leading-8 text-slate-400"
                 >
-                    Your payment has been received successfully.
 
-                    <br />
+                    {
+                        loading
+                            ? "We are verifying your payment. Please wait a few moments..."
+                            : verified
+                                ? "Congratulations! Your payment has been verified successfully. Your account has been upgraded to Student."
+                                : "Payment verification failed. Please contact support if your payment was completed."
+                    }
 
-                    We are securely verifying your payment and
-                    activating your student account.
-
-                    Please wait a few moments.
                 </motion.p>
-
-                {/* Loading */}
+                {/* Loading / Verification */}
 
                 <motion.div
                     initial={{
@@ -137,17 +202,43 @@ export default function PaymentSuccessPage() {
                     }}
                     className="mt-10 flex justify-center"
                 >
-                    <div className="flex items-center gap-4">
 
-                        <div className="h-4 w-4 animate-ping rounded-full bg-cyan-400" />
+                    {
 
-                        <p className="text-sm tracking-wide text-cyan-300">
+                        loading ? (
 
-                            Verifying Payment...
+                            <div className="flex items-center gap-4">
 
-                        </p>
+                                <div className="h-4 w-4 animate-ping rounded-full bg-cyan-400" />
 
-                    </div>
+                                <p className="text-sm tracking-wide text-cyan-300">
+
+                                    Verifying Payment...
+
+                                </p>
+
+                            </div>
+
+                        ) : verified ? (
+
+                            <div className="rounded-full border border-green-500/30 bg-green-500/10 px-6 py-3 text-green-400">
+
+                                ✅ Student Account Activated Successfully
+
+                            </div>
+
+                        ) : (
+
+                            <div className="rounded-full border border-red-500/30 bg-red-500/10 px-6 py-3 text-red-400">
+
+                                ❌ Payment Verification Failed
+
+                            </div>
+
+                        )
+
+                    }
+
                 </motion.div>
 
                 {/* Divider */}
@@ -166,9 +257,26 @@ export default function PaymentSuccessPage() {
 
                         </p>
 
-                        <h3 className="mt-2 text-xl font-bold text-cyan-400">
+                        <h3
+                            className={`mt-2 text-xl font-bold ${verified
+                                    ? "text-green-400"
+                                    : "text-cyan-400"
+                                }`}
+                        >
 
-                            Payment Received
+                            {
+
+                                loading
+
+                                    ? "Checking..."
+
+                                    : verified
+
+                                        ? "Student Activated"
+
+                                        : "Verification Failed"
+
+                            }
 
                         </h3>
 
@@ -178,13 +286,25 @@ export default function PaymentSuccessPage() {
 
                         <p className="text-sm text-slate-500">
 
-                            Next Step
+                            Payment Status
 
                         </p>
 
                         <h3 className="mt-2 text-xl font-bold text-white">
 
-                            Role Verification
+                            {
+
+                                loading
+
+                                    ? "Verifying..."
+
+                                    : verified
+
+                                        ? "Completed"
+
+                                        : "Need Support"
+
+                            }
 
                         </h3>
 
@@ -208,22 +328,27 @@ export default function PaymentSuccessPage() {
                     }}
                     className="mt-10"
                 >
+
                     <Link
                         href="/"
                         className="group flex w-full items-center justify-center gap-3 rounded-2xl bg-cyan-500 px-6 py-4 text-lg font-semibold text-white transition-all duration-300 hover:-translate-y-1 hover:bg-cyan-400 hover:shadow-[0_0_40px_rgba(6,182,212,.45)]"
                     >
+
                         Go To Homepage
 
                         <HiArrowRight
-                            className="transition-transform group-hover:translate-x-1"
                             size={22}
+                            className="transition-transform group-hover:translate-x-1"
                         />
 
                     </Link>
+
                 </motion.div>
 
             </motion.div>
 
         </main>
+
     );
+
 }
