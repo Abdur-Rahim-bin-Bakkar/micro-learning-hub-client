@@ -31,27 +31,39 @@ const adminLinks: unknown = [
         href: "/dashboard/admin/users",
         icon: Users,
     },
-    {
-        title: "Teachers",
-        href: "/dashboard/admin/teachers",
-        icon: UserCheck,
-    },
-    {
-        title: "Students",
-        href: "/dashboard/admin/students",
-        icon: UserRound,
-    },
-    {
-        title: "Courses",
-        href: "/dashboard/admin/courses",
-        icon: BookOpen,
-    },
+    // {
+    //     title: "Teachers",
+    //     href: "/dashboard/admin/teachers",
+    //     icon: UserCheck,
+    // },
+    // {
+    //     title: "Students",
+    //     href: "/dashboard/admin/students",
+    //     icon: UserRound,
+    // },
+    // {
+    //     title: "Courses",
+    //     href: "/dashboard/admin/courses",
+    //     icon: BookOpen,
+    // },
     {
         title: "Announcements",
         href: "/dashboard/admin/announcements",
         icon: Megaphone,
     }
 ];
+const studentLinks: unknown = [
+    {
+        title: "Overview",
+        href: "/dashboard/student",
+        icon: BarChart3,
+    },
+    {
+        title: "Exam",
+        href: "/dashboard/student/exam",
+        icon: BarChart3,
+    },
+]
 
 export default function Sidebar({
     onLinkClick,
@@ -60,6 +72,9 @@ export default function Sidebar({
     const session = useUserSession()
     if (session?.user?.role === 'admin') {
         links = adminLinks
+    }
+    if (session?.user?.role === 'student') {
+        links = studentLinks
     }
     return (
         <aside className="flex h-full w-72 flex-col border-r border-white/10 bg-[#0B0F14]/95 backdrop-blur-xl">
