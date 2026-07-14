@@ -14,7 +14,7 @@ import { useRouter } from "next/navigation";
 import { addComment } from "@/lib/api/helpDesk/addComment";
 import { useUserSession } from "@/lib/sessions/session";
 import { reactPost } from "@/lib/api/helpDesk/reactPost";
-// import { reactPost } from "@/lib/api/helpDesk/reactPost";
+
 interface Props {
   post: HelpPost;
 }
@@ -26,18 +26,12 @@ const roleColor = {
 } as const;
 
 const HelpPostCard = ({ post }: Props) => {
-  const session = useUserSession()
+  const session = useUserSession();
   const router = useRouter();
 
   const [showComment, setShowComment] = useState(false);
   const [comment, setComment] = useState("");
-  // const router = useRouter();
 
-  // const [showComment, setShowComment] = useState(false);
-
-  // const [comment, setComment] = useState("");
-  // console.log(post?.userId,'this is a post')
-  // console.log(getUserById(post?.userId),'user info')
   const handleComment = async () => {
     if (!comment.trim()) return;
     if (!session?.user) {
@@ -51,10 +45,10 @@ const HelpPostCard = ({ post }: Props) => {
       photo: session.user.image,
       comment,
     };
-    console.log(body)
+    console.log(body);
 
     const res = await addComment(body);
-    console.log(res, 'comment result')
+    console.log(res, 'comment result');
 
     if (res.success) {
       setComment("");
@@ -62,6 +56,7 @@ const HelpPostCard = ({ post }: Props) => {
       router.refresh();
     }
   };
+
   const handleReaction = async (
     reaction: "like" | "love" | "necessary"
   ) => {
@@ -80,220 +75,181 @@ const HelpPostCard = ({ post }: Props) => {
       const currentUserId = session?.user?.id ?? "";
 
       const isLiked = post.reactions.like.includes(currentUserId);
-
       const isLoved = post.reactions.love.includes(currentUserId);
-
-      const isNecessary =
-        post.reactions.necessary.includes(currentUserId);
+      const isNecessary = post.reactions.necessary.includes(currentUserId);
     } catch (error) {
       console.error(error);
     }
   };
+
   return (
-    <article className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-md transition duration-300 hover:shadow-xl dark:border-slate-700 dark:bg-slate-900">
-
+    <article className="overflow-hidden rounded-2xl border border-slate-800/60 bg-slate-950 text-slate-100 shadow-2xl backdrop-blur-md transition-all duration-300 hover:border-cyan-500/40 hover:shadow-[0_0_30px_rgba(6,182,212,0.15)]">
+      
       {/* Header */}
-
-      <div className="flex items-center justify-between p-5">
-
-        <div className="flex items-center gap-3">
-          {
-            post?.uimage && <Image
-              height={100}
-              width={300}
-              alt="image logo"
-              src={post.uimage}
-              unoptimized
-              className="w-15 h-15 rounded-full"
-            />
-          }
-
+      <div className="flex items-center justify-between p-6 bg-gradient-to-b from-slate-900/50 to-transparent">
+        <div className="flex items-center gap-4">
+          {post?.uimage && (
+            <div className="relative p-[2px] rounded-full bg-gradient-to-tr from-cyan-500 to-blue-600">
+              <Image
+                height={100}
+                width={300}
+                alt="image logo"
+                src={post.uimage}
+                unoptimized
+                className="w-12 h-12 rounded-full object-cover bg-slate-900"
+              />
+            </div>
+          )}
 
           <div>
-            {post?.name
-              &&
-
-              <h2 className="font-semibold text-lg">
+            {post?.name && (
+              <h2 className="font-bold text-lg tracking-wide text-white group-hover:text-cyan-400 transition-colors">
                 {post?.name}
               </h2>
-            }
-
-            <div className="mt-1 flex items-center gap-2">
-
-              {/* <Chip
-                size="sm"
-                color={roleColor[post.user.role]}
-                variant="flat"
-              >
-                {post.user.role}
-              </Chip> */}
-
-              <span className="text-xs text-gray-500">
-                {new Date(post.createdAt).toLocaleDateString()}
+            )}
+            <div className="mt-0.5 flex items-center gap-2">
+              <span className="text-xs font-medium text-slate-400">
+                {new Date(post.createdAt).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' })}
               </span>
-
             </div>
-
           </div>
-
         </div>
-
       </div>
 
-      {/* Image */}
-
+      {/* Image Container with Glow/Overlay */}
       {post.image && (
-        <Image
-          width={500}
-          height={500}
-          src={post.image}
-          alt={post.issue}
-          className="h-[350px] w-full object-cover"
-        />
+        <div className="relative group/img overflow-hidden px-6">
+          <div className="relative rounded-xl overflow-hidden border border-slate-800">
+            <Image
+              width={500}
+              height={500}
+              src={post.image}
+              alt={post.issue}
+              className="h-[300px] w-full object-cover transition duration-500 group-hover/img:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent"></div>
+          </div>
+        </div>
       )}
 
       {/* Body */}
-
-      <div className="p-5">
-
-        <h3 className="text-2xl font-bold">
+      <div className="p-6">
+        <h3 className="text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-cyan-400 tracking-tight leading-snug">
           {post.issue}
         </h3>
 
-        <p className="mt-3 whitespace-pre-line text-gray-600 dark:text-gray-300">
+        <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-slate-400">
           {post.description}
         </p>
-
       </div>
 
-      {/* Footer */}
-
-      <div className="border-t border-slate-200 p-5 dark:border-slate-700">
-
-        <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-
-          <div className="flex items-center gap-2 rounded-full bg-slate-100 px-4 py-2 dark:bg-slate-800">
-
+      {/* Footer / Stats */}
+      <div className="border-t border-slate-900 px-6 py-4 bg-slate-900/20">
+        <div className="mb-4 flex flex-wrap items-center gap-3 text-xs font-semibold">
+          <div className="flex items-center gap-1.5 rounded-lg bg-slate-900 border border-slate-800 px-3 py-1.5 text-cyan-400 shadow-inner">
             <span>👍</span>
-
-            <span className="font-medium">
-              {post.reactions.like.length}
-            </span>
-
+            <span>{post.reactions.like.length}</span>
           </div>
 
-          <div className="flex items-center gap-2 rounded-full bg-slate-100 px-4 py-2 dark:bg-slate-800">
-
+          <div className="flex items-center gap-1.5 rounded-lg bg-slate-900 border border-slate-800 px-3 py-1.5 text-rose-400 shadow-inner">
             <span>❤️</span>
-
-            <span className="font-medium">
-              {post.reactions.love.length}
-            </span>
-
+            <span>{post.reactions.love.length}</span>
           </div>
 
-          <div className="flex items-center gap-2 rounded-full bg-slate-100 px-4 py-2 dark:bg-slate-800">
-
-            <span>wow</span>
-
-            <span className="font-medium">
-              {post.reactions.necessary.length}
-            </span>
-
+          <div className="flex items-center gap-1.5 rounded-lg bg-slate-900 border border-slate-800 px-3 py-1.5 text-amber-400 shadow-inner">
+            <span>😮</span>
+            <span>{post.reactions.necessary.length}</span>
           </div>
 
-          <div className="ml-auto text-sm text-gray-500">
-
-            💬 {post.comments.length} Comments
-
+          <div className="ml-auto text-xs font-medium text-slate-500 tracking-wider uppercase">
+            {post.comments.length} Comments
           </div>
-
         </div>
 
-        <div className="flex items-center justify-between gap-3 place-items-center">
-
+        {/* Action Buttons */}
+        <div className="grid grid-cols-4 gap-1 border-t border-slate-900 pt-3 text-slate-400 text-xs font-bold tracking-wide">
           <button
             onClick={() => handleReaction("like")}
-            className="flex cursor-pointer items-center justify-center gap-2 rounded-xl py-2 px-5  transition hover:bg-slate-100 dark:hover:bg-slate-800"
+            className="flex flex-col sm:flex-row cursor-pointer items-center justify-center gap-2 rounded-xl py-2.5 transition-all duration-200 hover:bg-slate-900 hover:text-cyan-400 active:scale-95"
           >
-            <HiOutlineHandThumbUp size={20} />
-            Like
+            <HiOutlineHandThumbUp size={18} />
+            <span>Like</span>
           </button>
-          {/* df */}
+
           <button
             onClick={() => handleReaction("love")}
-            className="flex cursor-pointer items-center justify-center gap-2 rounded-xl py-2 px-5 transition hover:bg-slate-100 dark:hover:bg-slate-800"
+            className="flex flex-col sm:flex-row cursor-pointer items-center justify-center gap-2 rounded-xl py-2.5 transition-all duration-200 hover:bg-slate-900 hover:text-rose-400 active:scale-95"
           >
-            <HiOutlineHeart size={20} />
-            Love
+            <HiOutlineHeart size={18} />
+            <span>Love</span>
           </button>
 
           <button
             onClick={() => handleReaction("necessary")}
-            className="flex cursor-pointer items-center justify-center gap-2 rounded-xl py-3 px-5 transition hover:bg-slate-100 dark:hover:bg-slate-800"
+            className="flex flex-col sm:flex-row cursor-pointer items-center justify-center gap-2 rounded-xl py-2.5 transition-all duration-200 hover:bg-slate-900 hover:text-amber-400 active:scale-95"
           >
-            😮
-            wow
+            <span className="text-sm leading-none">😮</span>
+            <span>Wow</span>
           </button>
 
-          <button onClick={() => setShowComment(!showComment)} className="flex cursor-pointer items-center justify-center gap-2 rounded-xl py-3 transition hover:bg-slate-100 dark:hover:bg-slate-800">
-
-            <HiOutlineChatBubbleLeft size={20} />
-
-            Comment
-
+          <button 
+            onClick={() => setShowComment(!showComment)} 
+            className={`flex flex-col sm:flex-row cursor-pointer items-center justify-center gap-2 rounded-xl py-2.5 transition-all duration-200 active:scale-95 ${showComment ? 'bg-cyan-500/10 text-cyan-400' : 'hover:bg-slate-900 hover:text-cyan-400'}`}
+          >
+            <HiOutlineChatBubbleLeft size={18} />
+            <span>Comment</span>
           </button>
-
         </div>
+
         {/* Comment Box */}
         {showComment && (
-          <div className="mt-6 space-y-3">
+          <div className="mt-5 pt-4 border-t border-slate-900 space-y-3 animation-fade-in">
             <TextArea
               value={comment}
               onChange={(e) => setComment(e.target.value)}
-              placeholder="Write a comment..."
+              placeholder="Join the discussion..."
               rows={3}
-              className="w-full rounded-xl border border-slate-300 p-3 outline-none focus:border-blue-500 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+              className="w-full text-sm rounded-xl border border-slate-800 bg-slate-900 p-1 text-slate-200 placeholder-slate-500 outline-none focus-within:border-cyan-500/50 transition-all"
             />
 
             <div className="flex justify-end">
               <button
                 onClick={handleComment}
-                className="rounded-xl bg-blue-600 px-5 py-2 text-white transition hover:bg-blue-700"
+                className="rounded-xl bg-cyan-600 px-5 py-2 text-xs font-bold uppercase tracking-wider text-slate-950 font-sans transition-all duration-200 hover:bg-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.3)] active:scale-95 cursor-pointer"
               >
                 Post Comment
               </button>
             </div>
           </div>
         )}
-        {/* Comments */}
+
+        {/* Comments Section */}
         {post.comments.length > 0 && (
-          <div className="mt-8 space-y-4">
+          <div className="mt-6 pt-4 border-t border-slate-900 space-y-3 max-h-[350px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-slate-800">
             {post.comments.map((item, index) => (
               <div
                 key={index}
-                className="flex gap-3 rounded-2xl bg-slate-100 p-4 dark:bg-slate-800"
+                className="flex gap-3 rounded-xl bg-slate-900/50 border border-slate-900 p-4 transition-all hover:border-slate-800"
               >
                 <Image
                   src={item.photo}
                   alt={item.name}
                   width={45}
                   height={45}
-                  className="h-11 w-11 rounded-full object-cover"
+                  className="h-9 w-9 rounded-full object-cover ring-2 ring-slate-800/50"
                 />
 
-                <div className="flex-1">
-                  <div className="flex items-center justify-between">
-                    <h4 className="font-semibold">
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center justify-between gap-2">
+                    <h4 className="font-bold text-xs text-slate-200 truncate">
                       {item.name}
                     </h4>
-
-                    <span className="text-xs text-gray-500">
-                      {new Date(item.createdAt).toLocaleString()}
+                    <span className="text-[10px] font-medium text-slate-500 shrink-0">
+                      {new Date(item.createdAt).toLocaleDateString()}
                     </span>
                   </div>
 
-                  <p className="mt-2 text-gray-700 dark:text-gray-300">
+                  <p className="mt-1 text-xs text-slate-400 leading-relaxed break-words">
                     {item.comment}
                   </p>
                 </div>
@@ -303,7 +259,6 @@ const HelpPostCard = ({ post }: Props) => {
         )}
 
       </div>
-
     </article>
   );
 };
