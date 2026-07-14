@@ -81,24 +81,7 @@ export default function AnnouncementCard({
       <div className="px-8 py-10 md:px-14">
         {/* Logo */}
         <div className="flex justify-center">
-          <Link
-            href="/"
-            className="flex items-center gap-3 transition hover:scale-105"
-          >
-            <div className="rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 p-3 shadow-lg">
-              <GraduationCap
-                className="text-white"
-                size={28}
-              />
-            </div>
 
-            <h2 className="text-3xl font-bold text-white">
-              Micro
-              <span className="text-cyan-400">
-                Learn
-              </span>
-            </h2>
-          </Link>
         </div>
 
         {/* Date */}
@@ -188,10 +171,9 @@ export default function AnnouncementCard({
               font-semibold
               text-white
 
-              ${
-                announcement.priority === "high"
-                  ? "bg-red-600"
-                  : announcement.priority === "medium"
+              ${announcement.priority === "high"
+                ? "bg-red-600"
+                : announcement.priority === "medium"
                   ? "bg-yellow-500"
                   : "bg-green-600"
               }
