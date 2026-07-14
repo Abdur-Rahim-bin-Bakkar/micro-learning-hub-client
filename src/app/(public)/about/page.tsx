@@ -5,22 +5,22 @@ import AboutStats from "@/components/about/AboutStats";
 import CourseHero from "@/components/courses/CourseHero";
 
 
-export default function AboutPage(){
+export default function AboutPage() {
 
-return (
+    return (
 
-<main className="bg-[#0B0F14]">
+        <main className="bg-[#0B0F14]">
 
-<CourseHero/>
+            <CourseHero />
 
-<MissionVision/>
+            <MissionVision />
 
-<OurValues/>
+            <OurValues />
 
-<AboutStats/>
+         
 
-</main>
+        </main>
 
-);
+    );
 
 }
