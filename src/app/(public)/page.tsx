@@ -17,10 +17,10 @@ export default function Home() {
       <main>
         <HeroBanner />
         <FeaturedCourses/>
-        <LearningCategories />
         <PopularTeachers />
         <TopStudents />
         <StudentTestimonials/>
+        <LearningCategories />
         <HowItWorks/>
         <WhyChooseUs/>
         <FAQ/>
