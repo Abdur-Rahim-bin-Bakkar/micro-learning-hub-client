@@ -144,7 +144,7 @@ const ExamClient = ({ exam, token }: Props) => {
 
                         return (
                             <div
-                                key={question._id}
+                                key={index}
                                 className={`relative overflow-hidden rounded-2xl border p-6 transition-all duration-300 bg-slate-900/30 ${currentAnswer
                                     ? "border-cyan-500/40 shadow-[0_0_20px_rgba(6,182,212,0.05)]"
                                     : "border-slate-850 hover:border-slate-800 bg-slate-900/20"

@@ -75,6 +75,11 @@ const teacherLinks: unknown = [
         href: "/dashboard/teacher/exam",
         icon: BarChart3,
     },
+    {
+        title: "Exam Create",
+        href: "/dashboard/teacher/exam/create",
+        icon: BarChart3,
+    },
 ]
 
 export default function Sidebar({
