@@ -1,7 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
 import createExam from "@/lib/api/exam/createExam";
-
 import { useState } from "react";
 
 const CreateExamForm = () => {
@@ -55,23 +54,20 @@ const CreateExamForm = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-base-100 border rounded-2xl shadow-lg p-8 space-y-6"
+      className="space-y-6"
     >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
         {/* Title */}
         <div>
-          <label className="label">
-            <span className="label-text font-semibold">
-              Exam Title
-            </span>
+          <label className="block mb-2 text-sm font-semibold text-slate-300">
+            Exam Title
           </label>
-
           <input
             type="text"
             name="title"
             placeholder="Node.js Backend Assessment"
-            className="input input-bordered w-full"
+            className="w-full bg-[#0F172A] border border-slate-700 text-slate-100 placeholder-slate-500 rounded-xl px-4 py-3 outline-none transition-all duration-200 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20"
             value={formData.title}
             onChange={handleChange}
             required
@@ -80,17 +76,14 @@ const CreateExamForm = () => {
 
         {/* Course */}
         <div>
-          <label className="label">
-            <span className="label-text font-semibold">
-              Course Name
-            </span>
+          <label className="block mb-2 text-sm font-semibold text-slate-300">
+            Course Name
           </label>
-
           <input
             type="text"
             name="courseName"
             placeholder="Node.js"
-            className="input input-bordered w-full"
+            className="w-full bg-[#0F172A] border border-slate-700 text-slate-100 placeholder-slate-500 rounded-xl px-4 py-3 outline-none transition-all duration-200 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20"
             value={formData.courseName}
             onChange={handleChange}
             required
@@ -99,37 +92,31 @@ const CreateExamForm = () => {
 
         {/* Level */}
         <div>
-          <label className="label">
-            <span className="label-text font-semibold">
-              Level
-            </span>
+          <label className="block mb-2 text-sm font-semibold text-slate-300">
+            Level
           </label>
-
           <select
             name="level"
-            className="select select-bordered w-full"
+            className="w-full bg-[#0F172A] border border-slate-700 text-slate-100 rounded-xl px-4 py-3 outline-none transition-all duration-200 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20"
             value={formData.level}
             onChange={handleChange}
           >
-            <option>Beginner</option>
-            <option>Intermediate</option>
-            <option>Advanced</option>
+            <option className="bg-[#1E293B]">Beginner</option>
+            <option className="bg-[#1E293B]">Intermediate</option>
+            <option className="bg-[#1E293B]">Advanced</option>
           </select>
         </div>
 
         {/* Duration */}
         <div>
-          <label className="label">
-            <span className="label-text font-semibold">
-              Duration (Minutes)
-            </span>
+          <label className="block mb-2 text-sm font-semibold text-slate-300">
+            Duration (Minutes)
           </label>
-
           <input
             type="number"
             name="duration"
             placeholder="15"
-            className="input input-bordered w-full"
+            className="w-full bg-[#0F172A] border border-slate-700 text-slate-100 placeholder-slate-500 rounded-xl px-4 py-3 outline-none transition-all duration-200 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20"
             value={formData.duration}
             onChange={handleChange}
             required
@@ -137,13 +124,21 @@ const CreateExamForm = () => {
         </div>
       </div>
 
-      <div className="flex justify-end">
+      {/* Submit Button */}
+      <div className="flex justify-end pt-4">
         <button
           type="submit"
-          className="btn btn-primary px-8"
+          className="bg-cyan-500 hover:bg-cyan-600 text-slate-950 font-bold px-8 py-3 rounded-xl transition-all duration-200 shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 active:scale-95 disabled:opacity-50 disabled:pointer-events-none"
           disabled={loading}
         >
-          {loading ? "Creating..." : "Create Exam"}
+          {loading ? (
+            <div className="flex items-center gap-2">
+              <span className="w-4 h-4 border-2 border-slate-950 border-t-transparent rounded-full animate-spin"></span>
+              Creating...
+            </div>
+          ) : (
+            "Create Exam"
+          )}
         </button>
       </div>
     </form>
