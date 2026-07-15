@@ -64,6 +64,18 @@ const studentLinks: unknown = [
         icon: BarChart3,
     },
 ]
+const teacherLinks: unknown = [
+    {
+        title: "Overview",
+        href: "/dashboard/teacher",
+        icon: BarChart3,
+    },
+    {
+        title: "Exam",
+        href: "/dashboard/teacher/exam",
+        icon: BarChart3,
+    },
+]
 
 export default function Sidebar({
     onLinkClick,
@@ -75,6 +87,9 @@ export default function Sidebar({
     }
     if (session?.user?.role === 'student') {
         links = studentLinks
+    }
+    if (session?.user?.role === 'teacher') {
+        links = teacherLinks
     }
     return (
         <aside className="flex h-full w-72 flex-col border-r border-white/10 bg-[#0B0F14]/95 backdrop-blur-xl">
