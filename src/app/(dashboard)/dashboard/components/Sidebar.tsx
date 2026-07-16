@@ -12,6 +12,7 @@ import {
     BarChart3,
     Settings,
 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
 import SidebarItem from "./SidebarItem";
 import { useUserSession } from "@/lib/sessions/session";
@@ -19,8 +20,12 @@ import { useUserSession } from "@/lib/sessions/session";
 type SidebarProps = {
     onLinkClick?: () => void;
 };
-
-const adminLinks: unknown = [
+type SidebarLink = {
+    title: string;
+    href: string;
+    icon: LucideIcon;
+};
+const adminLinks: SidebarLink[] = [
     {
         title: "Overview",
         href: "/dashboard/admin",
@@ -52,7 +57,7 @@ const adminLinks: unknown = [
         icon: Megaphone,
     }
 ];
-const studentLinks: unknown = [
+const studentLinks: SidebarLink[] = [
     {
         title: "Overview",
         href: "/dashboard/student",
@@ -64,7 +69,7 @@ const studentLinks: unknown = [
         icon: BarChart3,
     },
 ]
-const teacherLinks: unknown = [
+const teacherLinks: SidebarLink[] = [
     {
         title: "Overview",
         href: "/dashboard/teacher",
@@ -82,19 +87,27 @@ const teacherLinks: unknown = [
     },
 ]
 
+
 export default function Sidebar({
     onLinkClick,
 }: SidebarProps) {
-    let links: unknown = []
+
+
+    let links: SidebarLink[] = [];
     const session = useUserSession()
-    if (session?.user?.role === 'admin') {
-        links = adminLinks
+    const role = session?.user as typeof session.user & {
+        role?: "admin" | "teacher" | "student";
+    };
+    if (role?.role === "admin") {
+        links = adminLinks;
     }
-    if (session?.user?.role === 'student') {
-        links = studentLinks
+
+    if (role?.role === "teacher") {
+        links = teacherLinks;
     }
-    if (session?.user?.role === 'teacher') {
-        links = teacherLinks
+
+    if (role?.role === "student") {
+        links = studentLinks;
     }
     return (
         <aside className="flex h-full w-72 flex-col border-r border-white/10 bg-[#0B0F14]/95 backdrop-blur-xl">
