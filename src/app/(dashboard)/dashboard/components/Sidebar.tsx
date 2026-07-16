@@ -31,11 +31,11 @@ const adminLinks: SidebarLink[] = [
         href: "/dashboard/admin",
         icon: BarChart3,
     },
-    {
-        title: "Users",
-        href: "/dashboard/admin/users",
-        icon: Users,
-    },
+    // {
+    //     title: "Users",
+    //     href: "/dashboard/admin/users",
+    //     icon: Users,
+    // },
     // {
     //     title: "Teachers",
     //     href: "/dashboard/admin/teachers",
@@ -75,11 +75,11 @@ const teacherLinks: SidebarLink[] = [
         href: "/dashboard/teacher",
         icon: BarChart3,
     },
-    {
-        title: "Exam",
-        href: "/dashboard/teacher/exam",
-        icon: BarChart3,
-    },
+    // {
+    //     title: "Exam",
+    //     href: "/dashboard/teacher/exam",
+    //     icon: BarChart3,
+    // },
     {
         title: "Exam Create",
         href: "/dashboard/teacher/exam/create",

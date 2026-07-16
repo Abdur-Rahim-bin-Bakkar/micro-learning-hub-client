@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 type Props = {
+  examId: string;
   onAddQuestion: (question: {
     question: string;
     options: string[];
@@ -10,7 +11,8 @@ type Props = {
   }) => void;
 };
 
-const QuestionForm = ({ onAddQuestion }: Props) => {
+
+const QuestionForm = ({  examId, onAddQuestion }: Props) => {
   const [question, setQuestion] = useState("");
 
   const [option1, setOption1] = useState("");

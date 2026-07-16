@@ -3,11 +3,12 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import CourseCard from "../courses/CourseCard";
+// // import CourseCard from "../courses/CourseCard";
 
 // import CourseCard, {
 //     Course,
 // } from "./CourseCard";
+import CourseCard, { Course } from "../courses/CourseCard";
 
 
 export default function FeaturedCourses() {

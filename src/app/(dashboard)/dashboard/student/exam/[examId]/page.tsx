@@ -15,6 +15,9 @@ const SingleExamPage = async ({ params }: Props) => {
   const exam = await getSingleExam(examId);
 
   const token = await getUserToken();
+    if (!token) {
+    return null;
+  }
 
   return (
     <ExamClient

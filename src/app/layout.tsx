@@ -2,6 +2,7 @@ import dns from "node:dns/promises";
 dns.setServers(["1.1.1.1", "8.8.8.8"]);
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import type { ReactNode } from "react";
 
 import "./globals.css";
 import Navbar from "@/components/layout/navbar/Navbar";

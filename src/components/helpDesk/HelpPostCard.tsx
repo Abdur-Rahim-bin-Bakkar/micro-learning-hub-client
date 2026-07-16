@@ -1,6 +1,7 @@
 "use client";
 
-import { Avatar, Chip, TextArea } from "@heroui/react";
+// import { Avatar, Chip, TextArea } from "@heroui/react";
+import { TextArea } from "@heroui/react";
 import { HelpPost } from "./types";
 import {
   HiOutlineHandThumbUp,
@@ -34,21 +35,24 @@ const HelpPostCard = ({ post }: Props) => {
 
   const handleComment = async () => {
     if (!comment.trim()) return;
-    if (!session?.user) {
+
+    if (!session?.user?.id) {
       return;
     }
 
     const body = {
       postId: post._id,
       userId: session.user.id,
-      name: session.user.name,
-      photo: session.user.image,
+      name: session.user.name ?? "",
+      photo: session.user.image ?? "",
       comment,
     };
+
     console.log(body);
 
     const res = await addComment(body);
-    console.log(res, 'comment result');
+
+    console.log(res, "comment result");
 
     if (res.success) {
       setComment("");
@@ -84,17 +88,17 @@ const HelpPostCard = ({ post }: Props) => {
 
   return (
     <article className="overflow-hidden rounded-2xl border border-slate-800/60 bg-slate-950 text-slate-100 shadow-2xl backdrop-blur-md transition-all duration-300 hover:border-cyan-500/40 hover:shadow-[0_0_30px_rgba(6,182,212,0.15)]">
-      
+
       {/* Header */}
       <div className="flex items-center justify-between p-6 bg-gradient-to-b from-slate-900/50 to-transparent">
         <div className="flex items-center gap-4">
-          {post?.uimage && (
+          {post?.user?.photo && (
             <div className="relative p-[2px] rounded-full bg-gradient-to-tr from-cyan-500 to-blue-600">
               <Image
                 height={100}
-                width={300}
-                alt="image logo"
-                src={post.uimage}
+                width={100}
+                alt="user image"
+                src={post.user.photo}
                 unoptimized
                 className="w-12 h-12 rounded-full object-cover bg-slate-900"
               />
@@ -102,10 +106,17 @@ const HelpPostCard = ({ post }: Props) => {
           )}
 
           <div>
-            {post?.name && (
-              <h2 className="font-bold text-lg tracking-wide text-white group-hover:text-cyan-400 transition-colors">
-                {post?.name}
-              </h2>
+            {post?.user?.photo && (
+              <div className="relative p-[2px] rounded-full bg-gradient-to-tr from-cyan-500 to-blue-600">
+                <Image
+                  height={100}
+                  width={100}
+                  alt="user image"
+                  src={post.user.photo}
+                  unoptimized
+                  className="w-12 h-12 rounded-full object-cover bg-slate-900"
+                />
+              </div>
             )}
             <div className="mt-0.5 flex items-center gap-2">
               <span className="text-xs font-medium text-slate-400">
@@ -192,8 +203,8 @@ const HelpPostCard = ({ post }: Props) => {
             <span>Wow</span>
           </button>
 
-          <button 
-            onClick={() => setShowComment(!showComment)} 
+          <button
+            onClick={() => setShowComment(!showComment)}
             className={`flex flex-col sm:flex-row cursor-pointer items-center justify-center gap-2 rounded-xl py-2.5 transition-all duration-200 active:scale-95 ${showComment ? 'bg-cyan-500/10 text-cyan-400' : 'hover:bg-slate-900 hover:text-cyan-400'}`}
           >
             <HiOutlineChatBubbleLeft size={18} />

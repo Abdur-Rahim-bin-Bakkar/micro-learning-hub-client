@@ -3,6 +3,7 @@ import { getUserSessionServer } from '@/lib/sessions/sesionServer';
 import React from 'react';
 import Sidebar from './components/Sidebar';
 import MobileSidebar from './components/MobileSidebar';
+import type { ReactNode } from "react";
 type DashboardLayoutProps = {
     children: ReactNode;
 };

@@ -1,6 +1,6 @@
 import { getUserToken } from "@/lib/sessions/token";
 
-interface AddCommentPayload {
+export interface AddCommentPayload {
     postId: string;
     userId: string;
     name: string;

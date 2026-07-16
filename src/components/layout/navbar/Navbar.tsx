@@ -244,14 +244,20 @@ export default function Navbar() {
 
                     {/* Mobile Profile Display (Non-linkable Div) */}
                     <div className="flex items-center gap-3 rounded-xl border border-slate-800 bg-slate-900/40 px-4 py-3 select-none">
-                      <Image
-                        src={user?.image}
-                        unoptimized
-                        alt={user.name}
-                        width={36}
-                        height={36}
-                        className="h-9 w-9 rounded-full object-cover ring-1 ring-slate-800"
-                      />
+                      {user?.image ? (
+                        <Image
+                          src={user.image}
+                          unoptimized
+                          alt={user.name}
+                          width={36}
+                          height={36}
+                          className="h-9 w-9 rounded-full object-cover ring-1 ring-slate-800"
+                        />
+                      ) : (
+                        <div className="h-9 w-9 rounded-full bg-slate-800 flex items-center justify-center text-xs font-bold text-cyan-500">
+                          {user?.name?.charAt(0).toUpperCase()}
+                        </div>
+                      )}
                       <div className="flex flex-col">
                         <span className="text-sm font-semibold text-slate-200">{user.name}</span>
                         <span className="text-[10px] uppercase font-bold text-slate-500">{user?.role}</span>

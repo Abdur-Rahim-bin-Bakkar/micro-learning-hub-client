@@ -5,14 +5,14 @@ import TeacherApplicationForm from "@/components/apply/TeacherApplicationForm";
 import StudentApplicationForm from "@/components/apply/StudentApplicationForm";
 import ApplicationStatusCard from "@/components/apply/ApplicationStatusCard";
 import { getApplicationStatus } from "@/lib/api/application/status";
-import { authClient } from "@/lib/auth-client";
+import { useUserSession } from "@/lib/sessions/session";
 import { useRouter } from "next/navigation";
 
 export default function ApplyPageContainer() {
-    const { data: session, isPending } = authClient.useSession();
+    const { user, isPending } = useUserSession();
     const router = useRouter();
 
-    const user = session?.user;
+    // const user = session?.user;
 
     const [activeTab, setActiveTab] = useState<
         "teacher" | "student"
@@ -123,8 +123,8 @@ export default function ApplyPageContainer() {
                                 <button
                                     onClick={() => setActiveTab("teacher")}
                                     className={`relative rounded-xl px-8 py-3.5 text-sm font-bold tracking-wider uppercase transition-all duration-300 cursor-pointer ${activeTab === "teacher"
-                                            ? "bg-cyan-500 text-slate-950 shadow-[0_0_20px_rgba(6,182,212,0.4)] scale-100"
-                                            : "text-slate-400 hover:bg-slate-900 hover:text-slate-200"
+                                        ? "bg-cyan-500 text-slate-950 shadow-[0_0_20px_rgba(6,182,212,0.4)] scale-100"
+                                        : "text-slate-400 hover:bg-slate-900 hover:text-slate-200"
                                         }`}
                                 >
                                     Teacher
@@ -133,8 +133,8 @@ export default function ApplyPageContainer() {
                                 <button
                                     onClick={() => setActiveTab("student")}
                                     className={`relative rounded-xl px-8 py-3.5 text-sm font-bold tracking-wider uppercase transition-all duration-300 cursor-pointer ${activeTab === "student"
-                                            ? "bg-cyan-500 text-slate-950 shadow-[0_0_20px_rgba(6,182,212,0.4)] scale-100"
-                                            : "text-slate-400 hover:bg-slate-900 hover:text-slate-200"
+                                        ? "bg-cyan-500 text-slate-950 shadow-[0_0_20px_rgba(6,182,212,0.4)] scale-100"
+                                        : "text-slate-400 hover:bg-slate-900 hover:text-slate-200"
                                         }`}
                                 >
                                     Student

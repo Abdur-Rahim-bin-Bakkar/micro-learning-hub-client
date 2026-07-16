@@ -96,7 +96,7 @@ export default function RegisterForm() {
             });
 
             if (error) {
-                setError(error.message);
+                setError(error.message ?? "Registration failed");
                 return;
             }
             if (data) {

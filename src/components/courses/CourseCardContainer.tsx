@@ -80,7 +80,7 @@ export default function CourseCardContainer() {
                     </h2>
 
                     <p className="mt-3 text-sm text-gray-400 leading-relaxed">
-                        We couldn't find any premium courses matching your active filters or search terms. Try modifying your criteria.
+                        We couldnt find any premium courses matching your active filters or search terms. Try modifying your criteria.
                     </p>
                     <Link href={'/course'}>
 
@@ -102,7 +102,7 @@ export default function CourseCardContainer() {
             <div className="container mx-auto grid gap-7 px-6 md:grid-cols-2 lg:grid-cols-3 max-w-7xl">
                 {courses.map((course) => (
                     <CourseCard
-                        key={course._id || course.id}
+                        key={course._id }
                         course={course}
                     />
                 ))}

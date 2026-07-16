@@ -72,7 +72,7 @@ export default function CourseCard({
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
 
                 {/* Featured Badge */}
-               
+
 
                 {/* Category Badge */}
                 <span className="absolute bottom-4 left-4 rounded-lg bg-slate-950/60 border border-slate-800/60 px-2.5 py-1 text-2xs font-semibold text-cyan-400 backdrop-blur-sm tracking-wide">

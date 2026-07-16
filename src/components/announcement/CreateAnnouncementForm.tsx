@@ -184,7 +184,7 @@ export default function CreateAnnouncementForm() {
                 {/* Title */}
                 <div className="focus-within:ring-2 focus-within:ring-blue-500/40 rounded-xl transition-all duration-200">
                     <Input
-                        label="Title *"
+                        // label="Title *"
                         name="title"
                         placeholder="Enter announcement title"
                         value={formData.title}
@@ -196,7 +196,7 @@ export default function CreateAnnouncementForm() {
                 {/* Slug */}
                 <div className="focus-within:ring-2 focus-within:ring-blue-500/40 rounded-xl transition-all duration-200">
                     <Input
-                        label="Slug *"
+                        // label="Slug *"
                         name="slug"
                         placeholder="new-course-release"
                         value={formData.slug}
@@ -208,7 +208,7 @@ export default function CreateAnnouncementForm() {
                 {/* Description */}
                 <div className="focus-within:ring-2 focus-within:ring-blue-500/40 rounded-xl transition-all duration-200">
                     <TextArea
-                        label="Description *"
+                        // label="Description *"
                         name="description"
                         placeholder="Write description here..."
                         value={formData.description}
@@ -306,8 +306,8 @@ export default function CreateAnnouncementForm() {
                 <div className="space-y-4 pt-4">
                     <Button
                         type="submit"
-                        color="primary"
-                        disabled={isUploading}
+                        // color="primary"
+                        // disabled={isUploading}
                         className="w-full py-4 text-base font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-500 hover:via-indigo-500 hover:to-purple-500 text-white rounded-xl shadow-xl transition-all transform hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 tracking-wide"
                     >
                         {isUploading ? "Uploading Image..." : "Create Announcement"}

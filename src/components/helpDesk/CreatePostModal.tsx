@@ -24,7 +24,9 @@ interface ReportData {
   uimage: string
 }
 
+
 export default function CreatePostModal() {
+
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [preview, setPreview] = useState("");
   const [issue, setIssue] = useState("");
@@ -81,13 +83,18 @@ export default function CreatePostModal() {
         imageUrl = await uploadImageToImgBB(imageFile);
       }
 
+      if (!session?.user?.id) {
+        alert("Please login first");
+        return;
+      }
+
       const reportData: ReportData = {
         image: imageUrl,
         issue,
         description,
-        userId: session?.user?.id,
-        uimage: session?.user?.image,
-        name: session?.user?.name
+        userId: session.user.id,
+        uimage: session.user.image || "",
+        name: session.user.name || "",
       };
       const result = await createHelpDeskPost(reportData);
       console.log(result, 'pst result')
@@ -220,7 +227,7 @@ export default function CreatePostModal() {
 
               <Button
                 slot="close"
-                isLoading={loading}
+                // isLoading={loading}
                 onPress={handleSubmit}
                 className="bg-cyan-400 font-medium text-white hover:bg-cyan-700"
               >
