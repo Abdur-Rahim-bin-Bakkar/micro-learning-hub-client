@@ -128,7 +128,7 @@ const CreateExamForm = () => {
       <div className="flex justify-end pt-4">
         <button
           type="submit"
-          className="bg-cyan-500 hover:bg-cyan-600 text-slate-950 font-bold px-8 py-3 rounded-xl transition-all duration-200 shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 active:scale-95 disabled:opacity-50 disabled:pointer-events-none"
+          className="cursor-pointer bg-cyan-500 hover:bg-cyan-600 text-slate-950 font-bold px-8 py-3 rounded-xl transition-all duration-200 shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 active:scale-95 disabled:opacity-50 disabled:pointer-events-none"
           disabled={loading}
         >
           {loading ? (

@@ -1,12 +1,8 @@
 export interface HelpPost {
   _id: string;
   userId: string;
-
-  user: {
-    name: string;
-    role: "student" | "teacher" | "admin";
-    photo: string;
-  };
+  name: string;
+  uimage: string;
 
   issue: string;
   description: string;

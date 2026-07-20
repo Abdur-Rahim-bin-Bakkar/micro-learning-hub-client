@@ -1,6 +1,5 @@
 "use client";
 
-// import { Avatar, Chip, TextArea } from "@heroui/react";
 import { TextArea } from "@heroui/react";
 import { HelpPost } from "./types";
 import {
@@ -9,7 +8,6 @@ import {
   HiOutlineHeart,
 } from "react-icons/hi2";
 import Image from "next/image";
-import { getUserById } from "@/lib/api/user/getUserById";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { addComment } from "@/lib/api/helpDesk/addComment";
@@ -20,12 +18,6 @@ interface Props {
   post: HelpPost;
 }
 
-const roleColor = {
-  student: "primary",
-  teacher: "success",
-  admin: "danger",
-} as const;
-
 const HelpPostCard = ({ post }: Props) => {
   const session = useUserSession();
   const router = useRouter();
@@ -35,10 +27,7 @@ const HelpPostCard = ({ post }: Props) => {
 
   const handleComment = async () => {
     if (!comment.trim()) return;
-
-    if (!session?.user?.id) {
-      return;
-    }
+    if (!session?.user?.id) return;
 
     const body = {
       postId: post._id,
@@ -48,11 +37,7 @@ const HelpPostCard = ({ post }: Props) => {
       comment,
     };
 
-    console.log(body);
-
     const res = await addComment(body);
-
-    console.log(res, "comment result");
 
     if (res.success) {
       setComment("");
@@ -61,26 +46,17 @@ const HelpPostCard = ({ post }: Props) => {
     }
   };
 
-  const handleReaction = async (
-    reaction: "like" | "love" | "necessary"
-  ) => {
+  const handleReaction = async (reaction: "like" | "love" | "necessary") => {
     if (!session?.user) return;
-
     try {
       const res = await reactPost({
         postId: post._id,
         userId: session.user.id,
         reaction,
       });
-
       if (res.success) {
         router.refresh();
       }
-      const currentUserId = session?.user?.id ?? "";
-
-      const isLiked = post.reactions.like.includes(currentUserId);
-      const isLoved = post.reactions.love.includes(currentUserId);
-      const isNecessary = post.reactions.necessary.includes(currentUserId);
     } catch (error) {
       console.error(error);
     }
@@ -89,45 +65,34 @@ const HelpPostCard = ({ post }: Props) => {
   return (
     <article className="overflow-hidden rounded-2xl border border-slate-800/60 bg-slate-950 text-slate-100 shadow-2xl backdrop-blur-md transition-all duration-300 hover:border-cyan-500/40 hover:shadow-[0_0_30px_rgba(6,182,212,0.15)]">
 
-      {/* Header */}
-      <div className="flex items-center justify-between p-6 bg-gradient-to-b from-slate-900/50 to-transparent">
-        <div className="flex items-center gap-4">
-          {post?.user?.photo && (
-            <div className="relative p-[2px] rounded-full bg-gradient-to-tr from-cyan-500 to-blue-600">
-              <Image
-                height={100}
-                width={100}
-                alt="user image"
-                src={post.user.photo}
-                unoptimized
-                className="w-12 h-12 rounded-full object-cover bg-slate-900"
-              />
-            </div>
-          )}
-
-          <div>
-            {post?.user?.photo && (
-              <div className="relative p-[2px] rounded-full bg-gradient-to-tr from-cyan-500 to-blue-600">
-                <Image
-                  height={100}
-                  width={100}
-                  alt="user image"
-                  src={post.user.photo}
-                  unoptimized
-                  className="w-12 h-12 rounded-full object-cover bg-slate-900"
-                />
-              </div>
-            )}
-            <div className="mt-0.5 flex items-center gap-2">
-              <span className="text-xs font-medium text-slate-400">
-                {new Date(post.createdAt).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' })}
-              </span>
-            </div>
+      {/* Header - User Info */}
+      <div className="flex items-center gap-4 p-6 bg-gradient-to-b from-slate-900/50 to-transparent">
+        {post.uimage && (
+          <div className="relative p-[2px] rounded-full bg-gradient-to-tr from-cyan-500 to-blue-600">
+            <Image
+              height={100}
+              width={100}
+              alt={post.name}
+              src={post.uimage}
+              unoptimized
+              className="w-12 h-12 rounded-full object-cover bg-slate-900"
+            />
           </div>
+        )}
+
+        <div>
+          <h4 className="font-semibold text-sm text-white">{post.name || "Anonymous"}</h4>
+          <span className="text-xs font-medium text-slate-400">
+            {new Date(post.createdAt).toLocaleDateString(undefined, {
+              day: "numeric",
+              month: "short",
+              year: "numeric",
+            })}
+          </span>
         </div>
       </div>
 
-      {/* Image Container with Glow/Overlay */}
+      {/* Image Container */}
       {post.image && (
         <div className="relative group/img overflow-hidden px-6">
           <div className="relative rounded-xl overflow-hidden border border-slate-800">
@@ -137,6 +102,7 @@ const HelpPostCard = ({ post }: Props) => {
               src={post.image}
               alt={post.issue}
               className="h-[300px] w-full object-cover transition duration-500 group-hover/img:scale-105"
+              unoptimized
             />
             <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent"></div>
           </div>
@@ -214,7 +180,7 @@ const HelpPostCard = ({ post }: Props) => {
 
         {/* Comment Box */}
         {showComment && (
-          <div className="mt-5 pt-4 border-t border-slate-900 space-y-3 animation-fade-in">
+          <div className="mt-5 pt-4 border-t border-slate-900 space-y-3">
             <TextArea
               value={comment}
               onChange={(e) => setComment(e.target.value)}
@@ -222,11 +188,10 @@ const HelpPostCard = ({ post }: Props) => {
               rows={3}
               className="w-full text-sm rounded-xl border border-slate-800 bg-slate-900 p-1 text-slate-200 placeholder-slate-500 outline-none focus-within:border-cyan-500/50 transition-all"
             />
-
             <div className="flex justify-end">
               <button
                 onClick={handleComment}
-                className="rounded-xl bg-cyan-600 px-5 py-2 text-xs font-bold uppercase tracking-wider text-slate-950 font-sans transition-all duration-200 hover:bg-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.3)] active:scale-95 cursor-pointer"
+                className="cursor-pointer rounded-xl bg-cyan-600 px-5 py-2 text-xs font-bold uppercase tracking-wider text-slate-950 font-sans transition-all duration-200 hover:bg-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.3)] active:scale-95"
               >
                 Post Comment
               </button>
@@ -236,7 +201,7 @@ const HelpPostCard = ({ post }: Props) => {
 
         {/* Comments Section */}
         {post.comments.length > 0 && (
-          <div className="mt-6 pt-4 border-t border-slate-900 space-y-3 max-h-[350px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-slate-800">
+          <div className="mt-6 pt-4 border-t border-slate-900 space-y-3 max-h-[350px] overflow-y-auto pr-1">
             {post.comments.map((item, index) => (
               <div
                 key={index}
@@ -248,8 +213,8 @@ const HelpPostCard = ({ post }: Props) => {
                   width={45}
                   height={45}
                   className="h-9 w-9 rounded-full object-cover ring-2 ring-slate-800/50"
+                  unoptimized
                 />
-
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between gap-2">
                     <h4 className="font-bold text-xs text-slate-200 truncate">
@@ -259,7 +224,6 @@ const HelpPostCard = ({ post }: Props) => {
                       {new Date(item.createdAt).toLocaleDateString()}
                     </span>
                   </div>
-
                   <p className="mt-1 text-xs text-slate-400 leading-relaxed break-words">
                     {item.comment}
                   </p>
@@ -268,7 +232,6 @@ const HelpPostCard = ({ post }: Props) => {
             ))}
           </div>
         )}
-
       </div>
     </article>
   );

@@ -22,6 +22,13 @@ export const auth = betterAuth({
     minPasswordLength: 6,
   },
 
+  socialProviders: {
+    google: {
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    },
+  },
+
   user: {
     additionalFields: {
       role: {

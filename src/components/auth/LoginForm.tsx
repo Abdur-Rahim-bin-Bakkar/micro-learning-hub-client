@@ -1,184 +1,159 @@
 "use client";
 
 import { useState } from "react";
-import { Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, Loader2 } from "lucide-react";
+import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
-
 
 type LoginData = {
   email: string;
   password: string;
 };
 
-
 export default function LoginForm() {
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
+  const [formData, setFormData] = useState<LoginData>({
+    email: "",
+    password: "",
+  });
 
-
-  const [showPassword, setShowPassword] =
-    useState<boolean>(false);
-
-
-
-  const [formData, setFormData] =
-    useState<LoginData>({
-      email: "",
-      password: "",
-    });
-
-
-
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-
-
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
-
       ...formData,
-
       [e.target.name]: e.target.value,
-
     });
-
-
+    setError("");
   };
 
-
-
-
-
-  const handleLogin = async (
-    e: React.FormEvent<HTMLFormElement>
-  ) => {
-
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-
-
-    console.log("Login Data:", formData);
+    setError("");
+    setLoading(true);
     const { data, error } = await authClient.signIn.email({
       ...formData,
       rememberMe: true,
       callbackURL: "/",
     });
-    // এখানে API call হবে
-
+    if (error) {
+      setError(error.message || "Invalid email or password");
+      setLoading(false);
+    }
   };
 
-
-
-
-
   return (
+    <div className="w-full max-w-md rounded-2xl border border-slate-800 bg-[#1E293B]/40 backdrop-blur-xl p-8 shadow-2xl relative overflow-hidden my-10">
+      {/* Top Glow Accent Bar */}
+      <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-500 to-transparent"></div>
 
-    <div className="relative w-full max-w-md overflow-hidden rounded-[32px] border border-white/10 bg-white/5 p-8 shadow-[0_0_60px_rgba(59,130,246,.15)] backdrop-blur-2xl">
-
-      {/* Background Glow */}
-      <div className="absolute -left-24 -top-24 h-56 w-56 rounded-full bg-cyan-500/20 blur-3xl" />
-      <div className="absolute -bottom-24 -right-24 h-64 w-64 rounded-full bg-violet-600/20 blur-3xl" />
-      <div className="absolute left-1/2 top-1/2 h-44 w-44 -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-500/10 blur-[100px]" />
-
-      {/* Grid Pattern */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.03)_1px,transparent_1px)] bg-[size:32px_32px]" />
-
-      {/* Border Glow */}
-      <div className="absolute inset-0 rounded-[32px] ring-1 ring-inset ring-white/10" />
-
-      <div className="relative z-10">
-
-        <h1 className="bg-gradient-to-r from-cyan-400 via-blue-500 to-violet-500 bg-clip-text text-center text-4xl font-extrabold text-transparent">
-          Welcome Back
+      <div className="text-center">
+        <h1 className="text-3xl font-extrabold text-white tracking-tight">
+          Welcome <span className="text-cyan-500 drop-shadow-[0_0_15px_rgba(6,182,212,0.3)]">Back</span>
         </h1>
-
-        <p className="mt-3 text-center text-gray-400">
+        <p className="mt-2 text-sm text-slate-400">
           Login to continue learning
         </p>
-
-        <form
-          onSubmit={handleLogin}
-          className="mt-8 space-y-6"
-        >
-
-          {/* Email */}
-          <div>
-
-            <label className="mb-2 block text-sm font-medium text-gray-300">
-              Email
-            </label>
-
-            <div className="relative">
-
-              <Mail
-                size={20}
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-cyan-400"
-              />
-
-              <input
-                name="email"
-                onChange={handleChange}
-                type="email"
-                placeholder="Enter your email"
-                className="w-full rounded-2xl border border-white/10 bg-black/30 py-3 pl-12 pr-4 text-white placeholder:text-gray-500 outline-none transition-all duration-300 focus:border-cyan-400 focus:bg-black/40 focus:shadow-[0_0_20px_rgba(34,211,238,.15)]"
-              />
-
-            </div>
-
-          </div>
-
-          {/* Password */}
-          <div>
-
-            <label className="mb-2 block text-sm font-medium text-gray-300">
-              Password
-            </label>
-
-            <div className="relative">
-
-              <Lock
-                size={20}
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-cyan-400"
-              />
-
-              <input
-                name="password"
-                onChange={handleChange}
-                type={showPassword ? "text" : "password"}
-                placeholder="Enter your password"
-                className="w-full rounded-2xl border border-white/10 bg-black/30 py-3 pl-12 pr-12 text-white placeholder:text-gray-500 outline-none transition-all duration-300 focus:border-cyan-400 focus:bg-black/40 focus:shadow-[0_0_20px_rgba(34,211,238,.15)]"
-              />
-
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 transition hover:text-cyan-400"
-              >
-                {showPassword ? (
-                  <EyeOff size={20} />
-                ) : (
-                  <Eye size={20} />
-                )}
-              </button>
-
-            </div>
-
-          </div>
-
-          {/* Login Button */}
-          <button
-            type="submit"
-            className="w-full rounded-2xl bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 py-3.5 font-semibold text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(59,130,246,.45)] active:scale-100"
-          >
-            Login
-          </button>
-
-        </form>
-
       </div>
 
+      <form onSubmit={handleLogin} className="mt-8 space-y-5">
+        {/* Email Input */}
+        <div>
+          <label className="text-xs font-semibold uppercase tracking-wider text-slate-400 block mb-2">
+            Email
+          </label>
+          <input
+            name="email"
+            type="email"
+            value={formData.email}
+            onChange={handleChange}
+            placeholder="you@example.com"
+            className="w-full rounded-xl border border-slate-800 bg-[#0F172A]/80 px-4 py-3 text-sm text-white placeholder-slate-600 outline-none transition duration-200 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/10"
+          />
+        </div>
+
+        {/* Password Input */}
+        <div>
+          <label className="text-xs font-semibold uppercase tracking-wider text-slate-400 block mb-2">
+            Password
+          </label>
+          <div className="relative">
+            <input
+              name="password"
+              type={showPassword ? "text" : "password"}
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="••••••••"
+              className="w-full rounded-xl border border-slate-800 bg-[#0F172A]/80 px-4 py-3 pr-12 text-sm text-white placeholder-slate-600 outline-none transition duration-200 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/10"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 transition hover:text-cyan-400"
+            >
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
+          </div>
+        </div>
+
+        {/* Error Box */}
+        {error && (
+          <div className="rounded-xl border border-red-500/20 bg-red-500/5 px-4 py-3 text-xs font-medium text-red-400">
+            {error}
+          </div>
+        )}
+
+        {/* Demo Login Button */}
+        <button
+          type="button"
+          onClick={() => { setFormData({ email: "demostudent@gmail.com", password: "Demodemo" }); setError(""); }}
+          className="flex w-full items-center justify-center gap-2 rounded-xl border border-amber-500/30 bg-amber-500/5 py-3 text-sm font-semibold text-amber-400 transition duration-200 hover:bg-amber-500/10 hover:border-amber-500/50 active:scale-[0.98]"
+        >
+          Demo Login (Student)
+        </button>
+
+        {/* Login Button */}
+        <button
+          disabled={loading}
+          type="submit"
+          className="flex w-full items-center justify-center gap-2 rounded-xl bg-cyan-500 py-3 font-bold text-slate-950 transition-all duration-200 hover:bg-cyan-600 shadow-lg shadow-cyan-500/10 active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none"
+        >
+          {loading && <Loader2 className="animate-spin" size={18} />}
+          {loading ? "Logging in..." : "Login"}
+        </button>
+
+        {/* Divider */}
+        <div className="flex items-center my-4">
+          <div className="flex-1 h-[1px] bg-slate-800"></div>
+          <span className="px-3 text-xs text-slate-500 uppercase font-semibold tracking-wider">Or</span>
+          <div className="flex-1 h-[1px] bg-slate-800"></div>
+        </div>
+
+        {/* Google Login Button */}
+        <button
+          type="button"
+          onClick={() => authClient.signIn.social({ provider: "google", callbackURL: "/" })}
+          className="flex w-full items-center justify-center gap-3 rounded-xl border border-slate-800 bg-slate-900/60 py-3 text-sm font-semibold text-slate-200 transition duration-200 hover:bg-slate-900 hover:border-slate-700 active:scale-[0.98]"
+        >
+          <img
+            src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+            alt="Google"
+            className="h-4 w-4"
+          />
+          Continue with Google
+        </button>
+      </form>
+
+      {/* Register Link */}
+      <div className="mt-6 text-center text-sm">
+        <span className="text-slate-400">Don&apos;t have an account? </span>
+        <Link
+          href="/register"
+          className="font-semibold text-cyan-400 hover:text-cyan-300 transition-colors underline-offset-4 hover:underline"
+        >
+          Register
+        </Link>
+      </div>
     </div>
-
   );
-
-
 }

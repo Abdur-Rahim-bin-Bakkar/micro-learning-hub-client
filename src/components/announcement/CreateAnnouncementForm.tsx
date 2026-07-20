@@ -8,6 +8,7 @@ import {
 } from "@heroui/react";
 
 import { useState } from "react";
+import Image from "next/image";
 
 // .env ফাইল থেকে কী নেওয়া হচ্ছে
 const IMGBB_API_KEY = process.env.NEXT_PUBLIC_IMGBB_KEY;
@@ -230,7 +231,7 @@ export default function CreateAnnouncementForm() {
                     {formData.image && (
                         <div className="mt-2">
                             <p className="text-xs text-emerald-400 mb-2 font-medium">✓ Uploaded successfully!</p>
-                            <img src={formData.image} alt="Preview" className="h-28 w-auto object-cover rounded-xl border border-slate-800 shadow-md" />
+                            <Image src={formData.image} alt="Preview" width={200} height={112} className="h-28 w-auto object-cover rounded-xl border border-slate-800 shadow-md" unoptimized />
                         </div>
                     )}
                 </div>

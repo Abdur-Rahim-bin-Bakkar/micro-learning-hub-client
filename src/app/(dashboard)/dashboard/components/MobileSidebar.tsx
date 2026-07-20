@@ -17,7 +17,7 @@ export default function MobileSidebar() {
 
         <button
           onClick={() => setOpen(true)}
-          className="rounded-xl border border-white/10 bg-white/5 p-2 text-white transition hover:bg-white/10"
+          className="cursor-pointer rounded-xl border border-white/10 bg-white/5 p-2 text-white transition hover:bg-white/10"
         >
           <Menu size={24} />
         </button>
@@ -46,7 +46,7 @@ export default function MobileSidebar() {
           {/* Close Button */}
           <button
             onClick={() => setOpen(false)}
-            className="absolute right-4 top-4 z-50 rounded-xl border border-white/10 bg-white/10 p-2 text-white transition hover:bg-white/20"
+            className="cursor-pointer absolute right-4 top-4 z-50 rounded-xl border border-white/10 bg-white/10 p-2 text-white transition hover:bg-white/20"
           >
             <X size={22} />
           </button>

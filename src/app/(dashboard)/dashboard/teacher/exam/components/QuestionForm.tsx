@@ -147,7 +147,7 @@ const QuestionForm = ({  examId, onAddQuestion }: Props) => {
       <div className="flex justify-end pt-2">
         <button
           type="submit"
-          className="bg-transparent hover:bg-cyan-500 text-cyan-400 hover:text-slate-950 font-bold px-6 py-2.5 rounded-xl border border-cyan-500/50 hover:border-cyan-500 transition-all duration-200 active:scale-95 shadow-md shadow-cyan-500/5 hover:shadow-cyan-500/20"
+          className="cursor-pointer bg-transparent hover:bg-cyan-500 text-cyan-400 hover:text-slate-950 font-bold px-6 py-2.5 rounded-xl border border-cyan-500/50 hover:border-cyan-500 transition-all duration-200 active:scale-95 shadow-md shadow-cyan-500/5 hover:shadow-cyan-500/20"
         >
           Add Question
         </button>

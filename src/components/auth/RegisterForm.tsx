@@ -69,7 +69,7 @@ export default function RegisterForm() {
     };
 
     const handleGoogleLogin = () => {
-        alert("Google Login function called");
+        authClient.signIn.social({ provider: "google", callbackURL: "/" });
     };
 
     const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {

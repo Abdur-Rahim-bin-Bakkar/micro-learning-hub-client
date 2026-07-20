@@ -78,7 +78,7 @@ const ExamDetailsPage = () => {
           <button
             onClick={handleSaveQuestions}
             disabled={loading}
-            className="bg-cyan-500 hover:bg-cyan-600 text-slate-950 font-bold px-8 py-3 rounded-xl transition-all duration-200 shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 active:scale-95 disabled:opacity-50 disabled:pointer-events-none"
+            className="cursor-pointer bg-cyan-500 hover:bg-cyan-600 text-slate-950 font-bold px-8 py-3 rounded-xl transition-all duration-200 shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 active:scale-95 disabled:opacity-50 disabled:pointer-events-none"
           >
             {loading ? (
               <div className="flex items-center gap-2">

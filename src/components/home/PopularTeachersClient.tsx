@@ -92,6 +92,7 @@ const PopularTeachersClient = ({ teachers }: Props) => {
                       src={teacher.image || "/avatar.png"}
                       alt={teacher.name}
                       className="h-64 w-64 sm:h-72 sm:w-72 rounded-2xl object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                      unoptimized
                       priority
                     />
                   </div>
@@ -136,11 +137,6 @@ const PopularTeachersClient = ({ teachers }: Props) => {
 
                     </div>
                   </div>
-
-                  {/* Profile Action Button */}
-                  <button className="mt-8 w-full sm:w-fit rounded-xl bg-cyan-500 hover:bg-cyan-600 text-slate-950 font-bold px-6 py-3 transition-all duration-200 shadow-md shadow-cyan-500/10 active:scale-95 text-sm tracking-wide">
-                    View Profile
-                  </button>
                 </div>
               </motion.div>
             </AnimatePresence>

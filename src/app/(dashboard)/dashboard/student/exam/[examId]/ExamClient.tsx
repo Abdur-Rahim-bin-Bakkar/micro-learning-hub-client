@@ -211,7 +211,7 @@ const ExamClient = ({ exam, token }: Props) => {
                 <button
                     disabled={loading}
                     onClick={handleSubmit}
-                    className="relative px-8 py-3.5 rounded-xl font-semibold tracking-wide text-slate-950 bg-cyan-500 transition-all duration-300 hover:bg-cyan-400 hover:shadow-[0_0_25px_rgba(6,182,212,0.4)] disabled:opacity-40 disabled:hover:shadow-none focus:outline-none w-full sm:w-auto"
+                    className="cursor-pointer relative px-8 py-3.5 rounded-xl font-semibold tracking-wide text-slate-950 bg-cyan-500 transition-all duration-300 hover:bg-cyan-400 hover:shadow-[0_0_25px_rgba(6,182,212,0.4)] disabled:opacity-40 disabled:hover:shadow-none focus:outline-none w-full sm:w-auto"
                 >
                     {loading ? "Submitting..." : "Submit Exam"}
                 </button>

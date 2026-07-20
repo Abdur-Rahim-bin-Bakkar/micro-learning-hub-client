@@ -89,6 +89,7 @@ const TopStudentsClient = ({ students }: Props) => {
                       src={student.image || "/avatar.png"}
                       alt={student.name}
                       className="h-64 w-64 sm:h-72 sm:w-72 rounded-2xl object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                      unoptimized
                       priority
                     />
                   </div>

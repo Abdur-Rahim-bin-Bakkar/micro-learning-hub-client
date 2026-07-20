@@ -169,6 +169,7 @@ export default function CreatePostModal() {
                           width={180}
                           height={180}
                           className="h-44 w-full object-cover"
+                          unoptimized
                         />
                       </div>
                     )}

@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import Link from "next/link";
+import ConfirmModal from "../../../components/ConfirmModal";
 
 type Exam = {
   _id: string;
@@ -28,6 +29,9 @@ type Exam = {
 export default function TeacherExamManagementClient() {
   const [exams, setExams] = useState<Exam[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deleteModal, setDeleteModal] = useState<{ open: boolean; id: string }>({
+    open: false, id: "",
+  });
 
   const fetchExams = async () => {
     try {
@@ -48,8 +52,8 @@ export default function TeacherExamManagementClient() {
     fetchExams();
   }, []);
 
-  const handleDelete = async (id: string) => {
-    if (!confirm("Delete this exam and all its questions?")) return;
+  const handleDeleteConfirm = async () => {
+    const id = deleteModal.id;
     try {
       const token = await getUserToken();
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/exams/teacher/${id}`, {
@@ -59,6 +63,7 @@ export default function TeacherExamManagementClient() {
       const json = await res.json();
       if (!res.ok) throw new Error(json.message);
       toast.success("Exam deleted");
+      setDeleteModal({ open: false, id: "" });
       fetchExams();
     } catch (e: any) {
       toast.error(e.message);
@@ -96,6 +101,15 @@ export default function TeacherExamManagementClient() {
 
   return (
     <div className="space-y-8">
+      <ConfirmModal
+        open={deleteModal.open}
+        title="Delete Exam"
+        message="Are you sure you want to delete this exam and all its questions? This cannot be undone."
+        confirmLabel="Delete Exam"
+        variant="danger"
+        onConfirm={handleDeleteConfirm}
+        onCancel={() => setDeleteModal({ open: false, id: "" })}
+      />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-white">Manage Exams</h1>
@@ -137,7 +151,7 @@ export default function TeacherExamManagementClient() {
                   <td className="p-4">
                     <button
                       onClick={() => toggleStatus(exam)}
-                      className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition ${
+                      className={`cursor-pointer flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition ${
                         exam.status === "published"
                           ? "bg-green-500/20 text-green-400 hover:bg-green-500/30"
                           : "bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30"
@@ -160,8 +174,8 @@ export default function TeacherExamManagementClient() {
                         <Eye size={16} />
                       </Link>
                       <button
-                        onClick={() => handleDelete(exam._id)}
-                        className="rounded-lg border border-slate-700 p-2 text-slate-400 transition hover:border-red-500 hover:text-red-500"
+                        onClick={() => setDeleteModal({ open: true, id: exam._id })}
+                        className="cursor-pointer rounded-lg border border-slate-700 p-2 text-slate-400 transition hover:border-red-500 hover:text-red-500"
                       >
                         <Trash2 size={16} />
                       </button>

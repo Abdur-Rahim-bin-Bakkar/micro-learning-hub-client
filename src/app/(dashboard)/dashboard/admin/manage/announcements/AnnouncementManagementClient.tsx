@@ -11,6 +11,7 @@ import {
   Loader2,
 } from "lucide-react";
 import { toast } from "sonner";
+import ConfirmModal from "../../../components/ConfirmModal";
 
 type Announcement = {
   _id: string;
@@ -27,6 +28,9 @@ export default function AnnouncementManagementClient() {
   const [showForm, setShowForm] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
   const [form, setForm] = useState({ title: "", description: "", author: "" });
+  const [deleteModal, setDeleteModal] = useState<{ open: boolean; id: string }>({
+    open: false, id: "",
+  });
 
   const fetchAnnouncements = async () => {
     try {
@@ -88,8 +92,8 @@ export default function AnnouncementManagementClient() {
     setShowForm(true);
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this announcement?")) return;
+  const handleDeleteConfirm = async () => {
+    const id = deleteModal.id;
     try {
       const token = await getUserToken();
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/announcements/${id}`, {
@@ -99,6 +103,7 @@ export default function AnnouncementManagementClient() {
       const json = await res.json();
       if (!res.ok) throw new Error(json.message);
       toast.success("Announcement deleted");
+      setDeleteModal({ open: false, id: "" });
       fetchAnnouncements();
     } catch (e: any) {
       toast.error(e.message);
@@ -115,6 +120,15 @@ export default function AnnouncementManagementClient() {
 
   return (
     <div className="space-y-8">
+      <ConfirmModal
+        open={deleteModal.open}
+        title="Delete Announcement"
+        message="Are you sure you want to delete this announcement? This cannot be undone."
+        confirmLabel="Delete"
+        variant="danger"
+        onConfirm={handleDeleteConfirm}
+        onCancel={() => setDeleteModal({ open: false, id: "" })}
+      />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-white">Manage Announcements</h1>
@@ -126,7 +140,7 @@ export default function AnnouncementManagementClient() {
             setEditId(null);
             setShowForm(!showForm);
           }}
-          className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-cyan-500/20 transition hover:opacity-90"
+          className="cursor-pointer flex items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-cyan-500/20 transition hover:opacity-90"
         >
           {showForm ? <X size={18} /> : <Plus size={18} />}
           {showForm ? "Cancel" : "New Announcement"}
@@ -162,7 +176,7 @@ export default function AnnouncementManagementClient() {
             />
             <button
               onClick={handleSubmit}
-              className="rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 px-6 py-3 font-semibold text-white shadow-lg shadow-cyan-500/20 transition hover:opacity-90"
+              className="cursor-pointer rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 px-6 py-3 font-semibold text-white shadow-lg shadow-cyan-500/20 transition hover:opacity-90"
             >
               {editId ? "Update" : "Create"}
             </button>
@@ -193,13 +207,13 @@ export default function AnnouncementManagementClient() {
               <div className="ml-4 flex gap-2">
                 <button
                   onClick={() => handleEdit(a)}
-                  className="rounded-lg border border-slate-700 p-2 text-slate-400 transition hover:border-cyan-500 hover:text-cyan-500"
+                  className="cursor-pointer rounded-lg border border-slate-700 p-2 text-slate-400 transition hover:border-cyan-500 hover:text-cyan-500"
                 >
                   <Edit size={18} />
                 </button>
                 <button
-                  onClick={() => handleDelete(a._id)}
-                  className="rounded-lg border border-slate-700 p-2 text-slate-400 transition hover:border-red-500 hover:text-red-500"
+                  onClick={() => setDeleteModal({ open: true, id: a._id })}
+                  className="cursor-pointer rounded-lg border border-slate-700 p-2 text-slate-400 transition hover:border-red-500 hover:text-red-500"
                 >
                   <Trash2 size={18} />
                 </button>

@@ -62,6 +62,10 @@ export default function Navbar() {
           title: "Help Desk",
           href: "/help-desk",
         },
+        {
+          title: "My Posts",
+          href: "/help-desk/my-posts",
+        },
       ]
       : []),
   ];

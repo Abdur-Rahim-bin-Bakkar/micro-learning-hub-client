@@ -123,7 +123,7 @@ const QuestionForm = () => {
 
       </div>
 
-      <button className="btn btn-primary">
+      <button className="btn btn-primary cursor-pointer">
 
         Add Question
 

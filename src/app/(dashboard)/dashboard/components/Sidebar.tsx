@@ -13,6 +13,7 @@ import {
     Settings,
     FileText,
     ClipboardList,
+    ClipboardPen,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -37,6 +38,16 @@ const adminLinks: SidebarLink[] = [
         title: "Manage Announcements",
         href: "/dashboard/admin/manage/announcements",
         icon: Megaphone,
+    },
+    {
+        title: "Teacher Applications",
+        href: "/dashboard/admin/manage/applications",
+        icon: ClipboardPen,
+    },
+    {
+        title: "All Users",
+        href: "/dashboard/admin/manage/users",
+        icon: Users,
     },
 ];
 const studentLinks: SidebarLink[] = [
