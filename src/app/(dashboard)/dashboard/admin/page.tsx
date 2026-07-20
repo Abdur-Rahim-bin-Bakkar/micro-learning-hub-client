@@ -1,16 +1,25 @@
-import { checkRole } from '@/lib/checkAuth/checkRole';
-import { getUserSessionServer } from '@/lib/sessions/sesionServer';
-import React from 'react';
+import { checkRole } from "@/lib/checkAuth/checkRole";
+import { getAdminOverview } from "@/lib/api/dashboard/overview";
+import AdminOverviewClient from "./AdminOverviewClient";
 
-const AdminDashBoard = async () => {
-    const session = await getUserSessionServer()
-    await checkRole('admin')
+const AdminDashboard = async () => {
+  await checkRole("admin");
+  let data;
+  try {
+    data = await getAdminOverview();
+  } catch {
+    data = null;
+  }
 
-    return (
-        <div>
-            <h1>admin AdminDashBoard</h1>
-        </div>
-    );
+  return (
+    <div className="space-y-8">
+      <div>
+        <h1 className="text-3xl font-bold text-white">Admin Overview</h1>
+        <p className="mt-1 text-slate-400">Monitor your platform at a glance.</p>
+      </div>
+      <AdminOverviewClient data={data} />
+    </div>
+  );
 };
 
-export default AdminDashBoard;
+export default AdminDashboard;

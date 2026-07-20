@@ -1,12 +1,10 @@
-import CreateAnnouncementForm from '@/components/announcement/CreateAnnouncementForm';
-import React from 'react';
+import { checkRole } from "@/lib/checkAuth/checkRole";
+import { redirect } from "next/navigation";
 
-const AnouncemntPage = () => {
-    return (
-        <div>
-            <CreateAnnouncementForm/>
-        </div>
-    );
+const AnnouncementPage = async () => {
+  await checkRole("admin");
+  redirect("/dashboard/admin/manage/announcements");
+  return null;
 };
 
-export default AnouncemntPage;
+export default AnnouncementPage;

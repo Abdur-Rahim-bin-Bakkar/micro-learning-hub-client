@@ -11,6 +11,8 @@ import {
     Megaphone,
     BarChart3,
     Settings,
+    FileText,
+    ClipboardList,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -31,31 +33,11 @@ const adminLinks: SidebarLink[] = [
         href: "/dashboard/admin",
         icon: BarChart3,
     },
-    // {
-    //     title: "Users",
-    //     href: "/dashboard/admin/users",
-    //     icon: Users,
-    // },
-    // {
-    //     title: "Teachers",
-    //     href: "/dashboard/admin/teachers",
-    //     icon: UserCheck,
-    // },
-    // {
-    //     title: "Students",
-    //     href: "/dashboard/admin/students",
-    //     icon: UserRound,
-    // },
-    // {
-    //     title: "Courses",
-    //     href: "/dashboard/admin/courses",
-    //     icon: BookOpen,
-    // },
     {
-        title: "Announcements",
-        href: "/dashboard/admin/announcements",
+        title: "Manage Announcements",
+        href: "/dashboard/admin/manage/announcements",
         icon: Megaphone,
-    }
+    },
 ];
 const studentLinks: SidebarLink[] = [
     {
@@ -64,9 +46,14 @@ const studentLinks: SidebarLink[] = [
         icon: BarChart3,
     },
     {
-        title: "Exam",
+        title: "Available Exams",
         href: "/dashboard/student/exam",
-        icon: BarChart3,
+        icon: FileText,
+    },
+    {
+        title: "My Results",
+        href: "/dashboard/student/manage/results",
+        icon: ClipboardList,
     },
 ]
 const teacherLinks: SidebarLink[] = [
@@ -75,15 +62,15 @@ const teacherLinks: SidebarLink[] = [
         href: "/dashboard/teacher",
         icon: BarChart3,
     },
-    // {
-    //     title: "Exam",
-    //     href: "/dashboard/teacher/exam",
-    //     icon: BarChart3,
-    // },
     {
-        title: "Exam Create",
+        title: "Manage Exams",
+        href: "/dashboard/teacher/manage/exams",
+        icon: FileText,
+    },
+    {
+        title: "Create Exam",
         href: "/dashboard/teacher/exam/create",
-        icon: BarChart3,
+        icon: ClipboardList,
     },
 ]
 
